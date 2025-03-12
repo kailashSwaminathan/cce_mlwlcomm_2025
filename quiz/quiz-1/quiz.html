@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <h1> QUIZ - 1</h1>
+    <div>
+	  <details>
+	    <summary>1.</summary>
+		Suppose you have trained an SVM that is not performing well; hence, you have constructed more features from existing features for the model. 
+Which of the following statements may not be true?                                                                        (MSQ)(0.5 Points)
+        <ul>
+          <li>We are lowering the bias.</li>
+	      <li>We are lowering the variance.</li>
+          <li>We are increasing the bias.</li>
+          <li>We are increasing the variance.</li>
+        </ul>
+	  </details>
+	</div>
+	<div>
+	  <details>
+	    <summary>2.</summary>
+		The dataset contains 150 points (see data set 1 in the QUIZ 1 folder from the files section), and each input point has four features and belongs 
+		to one among three classes. Use the first 100 points as the training data and the remaining 50 as test data. In the following question, to report accuracy, 
+		use the test dataset. You can round off the accuracy value to the nearest 2-decimal point number. (Note: Do not change the order of data points.)     
+		Train an SVM classifier on the given dataset. We recommend using sklearn. train models with the following set of hyperparameters RBF-kernel, gamma=0.5, one-vs-rest classifier, no-feature-normalization. Try C=0.1,0.01,1,10. For the above set of hyperparameters, report the best classification accuracy and its corresponding C value (1 Point)
+		<ul>
+		  <li>Best classification accuracy: 0.9800 (using {'kernel': 'rbf', 'gamma': 0.5, 'C': 10})</li>
+		  <li>Best classification accuracy: 0.3200 (using {'kernel': 'rbf', 'gamma': 0.5, 'C': 0.1})</li>
+		  <li>Best classification accuracy: 0.9600 (using {'kernel': 'rbf', 'gamma': 0.5, 'C': 100})</li>
+		  <li>Best classification accuracy: 0.9800 (using {'kernel': 'rbf', 'gamma': 0.5, 'C': 1})</li>
+		</ul>
+      </details>
+	</div>
+	<div>
+	  <details>
+	    <summary>3.</summary>
+		The dataset contains 150 points (see data set 1 in the QUIZ 1 folder from the files section), and each input point has four features and belongs to one among three classes. Use the first 100 points as the training data and the remaining 50 as test data. In the following question, to report accuracy, use the test dataset. You can round off the accuracy value to the nearest 2-decimal point number. (Note: Do not change the order of data points.)
+		Train an SVM classifier on the given dataset for the first 100 points. We recommend using sklearn. Use the remaining data as test data and find the model's accuracy in % (percentage). (hint: use SVC() function simply) (1 Point)
+		  <ul>
+			<li>96</li>
+			<li>100</li>
+			<li>94</li>
+			<li>98</li>
+		  </ul>
+      </details>	  
+	</div>
+	<div>
+	  <details>
+	    <summary>4.</summary>
+		The dataset contains 150 points (see data set 1 in the QUIZ 1 folder from the files section), and each input point has four features and belongs to one among three classes. Use the first 100 points as the training data and the remaining 50 as test data. In the following question, to report accuracy, use the test dataset. You can round off the accuracy value to the nearest 2-decimal point number. (Note: Do not change the order of data points.)   
+		Train an SVM classifier on the given dataset for the first 100 points. Use only the first three features. We recommend using sklearn. Use the remaining data as test data and find the accuracy of the model in % (percentage) (hint: use SVC() function simply) (1 Point)
+		  <ul>
+			<li>100</li>
+			<li>96</li>
+			<li>94</li>
+			<li>98</li>
+		  </ul>
+	  </details>
+	</div>
+	<div>
+	  <details>
+	    <summary>5.</summary>
+		The dataset contains 150 points (see data set 1 in QUIZ 1 folder from files section), and each input point has four features and belongs to one among three classes. Use the first 100 points as the training data and the remaining 50 as test data. (Note: Do not change the order of data points.) 
+		Train an SVM classifier on the given dataset for the first 100 points. We recommend using sklearn. Use the remaining data as test data. Choose the points That are not true support vectors of the model ( hint: use SVC() function simply) (1 Point)
+		  <ul>
+			<li>[6.0 3.4 4.5 1.6]</li>
+			<li>[6.9 3.1 4.9 1.5]</li>
+			<li>[5.1 3.7 1.5 0.4]</li>
+			<li>[6.7 3.0 5.2 2.3]</li>
+			<li>[4.4 3.0 1.3 0.2]</li>
+			<li>[6.9 3.1 5.1 2.3]</li>
+			<li>[6.6 3.0 4.4 1.4]</li>
+			<li>[5.9 3.0 4.2 1.5]</li>
+			<li>[6.7 3.0 5.0 1.7]</li>
+			<li>[6.7 3.1 4.4 1.4]</li>
+		  </ul>
+	  </details>
+	</div>
+	<div>
+	<details>
+	<summary>6.</summary>
+	The dataset contains 150 points (see data set 1 in the QUIZ 1 folder from the files section), and each input point has four features and belongs to one among three classes. Use the first 100 points as the training data and the remaining 50 as test data. (Note: Do not change the order of data points.)  
+   Train an SVM classifier on the given dataset for the first 100 points. We recommend using sklearn. Use the remaining data as test data. Total how many data points are there which are not support vectors for this model? 
+(hint: use SVC() function simply)
+(1 Point)
+	  <ul>
+	    <li>50</li>
+		<li>52</li>
+	    <li>54</li>
+		<li>44</li>
+	    <li>58</li>
+		<li>48</li>
+	    <li>56</li>
+		<li>46</li>
+ 	    <li>42</li>
+	  </ul>
+	</details>
+	</div>
+	<div>
+	  <details>
+	    <summary>7.</summary>
+		Which of the following statements is(are) true about the sigmoid function? (MSQ)(0.5 Points)
+	    <ul>
+		  <li>The function is continuously differentiable</li>
+		  <li>The function is monotonic</li>
+		  <li>The derivative of the σ(z) function cannot be negative.</li>
+		  <li>The function is bounded between 0 and 1</li>
+		  <li>The function attains its maximum when z→∞</li>
+	    </ul>
+	  </details>
+	</div>
+	<div>
+	  <details>
+	    <summary>8.</summary>
+		How many weights does a neural network have if it consists of an input layer with three neurons, three hidden layers, each with seven neurons, and an output layer with three neurons? Assume there are no bias terms in the network.                              (NAT)  
+		 
+		Note:  enter the Numerical answer only. (0.5 Points)
+	  </details>
+	</div>
+	<div>
+	  <details>
+	    <summary>9.</summary>
+		Use the following data to answer the questions below. The following diagram represents a neural network containing two hidden layers and one output layer. The input to the network is a column vector x∈R^ (3). The activation function used in hidden layers is sigmoid. The output layer doesn’t contain any activation function.
+
+(hint: choose numerical values up to 3 decimals in each calculation involved to solve this) 
+(1 Point)
+
+        <img src="img/img_question_09.png"></img>
+		  <ul>
+		    <li>7.989</li>
+			<li>6.989</li>
+			<li>6.889</li>
+			<li>7.33</li>
+			<li>6.33</li>
+			<li>7.889</li>
+		  </ul>
+	  </details>
+	</div>
+	<div>
+	  <details>
+	    <summary>10.</summary>
+		<p>
+		  Enter your answer up to 3 decimals
+		 (hint: choose numerical values up to 3 decimals in each calculation involved to solve this) (1 Point) 
+		</p>
+        <img src="img/img_question_10.png"></img>
+		  <ul>
+		  </ul>
+	  </details>
+	</div>
+    <div>
+	  <details>
+	    <summary>11.</summary>
+		<p>
+		(hint: choose numerical values up to 3 decimals in each calculation involved to solve this)
+(1 Point)
+        </p>
+        <img src="img/img_question_11.png" />
+		  <ul> 
+            <li>2.156</li>
+            <li>-2.222</li>
+            <li>2.199</li>
+            <li>-2.178</li>
+            <li>2.178</li>
+            <li>-2.156</li>
+            <li>2.222</li>
+            <li>-2.199</li>  
+		  </ul>
+	  </details>
+	</div> 
+	<div>
+	  <details>
+	    <summary>12.</summary>
+		<p>(1 point)</p>
+		<img src="img/img_question_12.png" />
+		  <ul>
+            <li>Bias =10,w1=5,w2=15,w3=15</li>
+            <li>Bias =0,w1=15,w2=10,w3=15</li>
+            <li>Bias =10,w1=25,w2=5,w3=10</li>
+            <li>Bias =15,w1=5,w2=20,w3=5</li>
+		  </ul>
+	  </details>
+	</div> 
+	<div>
+	  <details>
+	    <summary>13.</summary>
+		<p>(1 Point)</p>
+		<img src="img/img_question_13.png" />
+		  <ul>
+		    <li>a</li>
+		    <li>d</li>
+		    <li>c</li>
+		    <li>b</li>
+		  </ul>
+	  </details>
+	</div> 
+	<div>
+	  <details>
+	    <summary>14.</summary>
+		<p>(1 Point)</p>
+		<img src="img/img_question_14.png" />
+		  <ul>
+		    <li>c</li>
+		    <li>b</li>
+		    <li>d</li>
+		    <li>a</li>
+		  </ul>
+	  </details>
+	</div> 
+	<div>
+	  <details>
+	    <summary>15.</summary>
+		<p>(1 Point)</p>
+		<img src="img/img_question_15.png" />
+		  <ul>
+            <li>b</li>
+            <li>d</li>
+            <li>a</li>
+            <li>c</li>
+		  </ul>
+	  </details>
+	</div>
+    <div>
+	  <details>
+	    <summary>16.</summary>
+		<p>(1 Point)</p>
+		<img src="img/img_question_16.png" />
+		  <ul>
+		    <li>a</li>
+		    <li>c</li>
+		    <li>d</li>
+		    <li>b</li>
+		  </ul>
+	  </details>
+	</div>	
+	<div>
+	  <details>
+	    <summary>17.</summary>
+		<p>(1 Point)</p>
+		<img src="img/img_question_17.png" />
+		  <ul>
+		    <li>a</li>
+		    <li>d</li>
+		    <li>b</li>
+		    <li>c</li>
+		  </ul>
+	  </details>
+	</div> 
+	<div>
+	  <details>
+	    <summary>18.</summary>
+		<p>(1 Point)</p>
+		<img src="img/img_question_18.png" />
+		  <ul>
+		    <li>b</li>
+		    <li>d</li>
+			<li>a</li>
+		    <li>c</li>
+		  </ul>
+	  </details>
+	</div>
+	<div>
+	  <details>
+	    <summary>19.</summary>
+		<p>(1 Point)</p>
+		<img src="img/img_question_19.png" />
+		  <ul>
+		    <li>c
+		    <li>d
+		    <li>b
+		    <li>a
+		  </ul>
+	  </details>
+	</div>	
+	<div>
+	  <details>
+	    <summary>20.</summary>
+		<p>(1 Point)</p>
+		<img src="img/img_question_20.png" />
+		  <ul>
+		    <li>a</li>
+		    <li>c</li>
+		    <li>d</li>
+		    <li>b</li>
+		  </ul>
+	  </details>
+	</div> 
+	<div>
+	  <details>
+	    <summary>21.</summary>
+		Arrange the following sequence in the order they are performed by LSTM at the time step t.           
+		[selectively read, selectively write, selectively forget] (0.5 Points)
+		  <ul>
+		    <li>Selectively write, Selectively read, Selectively forget</li>
+		    <li>Selectively forget, Selectively write, Selectively read</li>
+		    <li>Selectively read, Selectively write, Selectively forget</li>
+		    <li>Selectively read, Selectively forget, Selectively write</li>
+		  </ul>
+	  </details>
+	</div> 
+	<div>
+	  <details>
+	    <summary>22.</summary>
+		What are the problems in the RNN architecture?  
+(0.5 Points)
+		  <ul>
+		    <li>Exploding and vanishing gradient problem.</li>
+		    <li>Morphing of information stored at each time step.</li>
+		    <li>Errors caused at time step tn can’t be related to previous time steps far away</li>
+		  </ul>
+	  </details>
+	</div>
+    <div>
+	  <details>
+	    <summary>23.</summary>
+		<p>(0.5 Points)
+		<img src="img/img_question_23.png" />
+		  <ul>
+		    <li>c</li>
+		    <li>a</li>
+		    <li>b</li>
+		    <li>d</li>
+		  </ul>
+	  </details>
+	</div>	
+	<div>
+	  <details>
+	    <summary>24.</summary>
+		Consider the following 4 training examples
+          <ul>
+		    <li>x = −1, y = 0.0319</li>
+			<li>x = 0, y = 0.8692</li>
+			<li>x = 1, y = 1.9566</li>
+			<li>x = 2, y = 3.0343</li>
+ 
+   We want to learn a function f (x) = ax + b which is parametrized by (a, b). Using squared error as the loss function, which of the following parameters would
+ you used to model this function.
+(1 Point)
+		  <ul>
+		    <li>(2, 1)</li>
+		    <li>(1, 2)</li>
+		    <li>(2, 2)</li>
+		    <li>(1, 1)</li>
+		  </ul>
+	  </details>
+	</div>
+    <div>
+	  <details>
+	    <summary>25.</summary>
+		<p>
+		for k = 3, use KNN regression to find the corresponding neighbours for a new data-point (3,7)
+ (Use Euclidean distance measure for finding closest points) MSQ
+(1 Point)
+        </p>
+		<img src="img/img_question_25.png" />
+		  <ul>
+		    <li>(1,9)</li>
+		    <li>(8,4)</li>
+		    <li>(5,2)</li>
+		    <li>(2,1)</li>
+		    <li>(3,5)</li>
+		    <li>(6,3)</li>
+		  </ul>
+	  </details>
+	</div>
+    <div>
+	  <details>
+	    <summary>26.</summary>
+		<p>
+		for k = 3, use KNN regression to find the prediction for a new data-point (3,7) (Use Euclidean distance measure for finding closest points)
+(1 Point)
+        </p>
+		<img src="img/img_question_26.png" />
+		  <ul>
+		    <li>2.0</li>
+		    <li>2.8</li>
+		    <li>Option 2</li>
+		    <li>3.6</li>
+		    <li>3.2</li>
+		  </ul>
+	  </details>
+	</div>
+    <div>
+	  <details>
+	    <summary>27.</summary>
+		<p>(1 Point)</p>
+		<img src="img/img_question_27.png" />
+		  <ul>
+		    <li>1</li>
+		    <li>4</li>
+		    <li>2</li>
+		    <li>8</li>
+		    <li>5</li>
+		    <li>7</li>
+		    <li>9</li>
+		    <li>6</li>
+		    <li>10</li>
+		    <li>3</li>
+		  </ul>
+	  </details>
+	</div>	
+	<div>
+	  <details>
+	    <summary>28.</summary>
+		<p>(1 Point)</p>
+		<img src="img/img_question_28.png" />
+		  <ul>
+		    <li>1</li>
+		    <li>0</li>
+		    <li>None of the above</li>
+		    <li>Tie</li>
+		  </ul>
+	  </details>
+	</div> 
+	<div>
+	  <details>
+	    <summary>29.</summary>
+		<p>
+		Given the data in the Table, reduce the dimension from 2 to 1 using the Principal Component Analysis (PCA) algorithm.  find the covariance matrix for the PCA algorithm
+(1 Point)
+		</p>
+		<img src="img/img_question_29.png" />
+		  <ul>
+		    <li>2</li>
+		    <li>1</li>
+		    <li>4</li>
+		    <li>3</li>
+		  </ul>
+	  </details>
+	</div> 
+	<div>
+	  <details>
+	    <summary>30.</summary>
+		<p>
+		Given the data in the Table, reduce the dimension from 2 to 1 using the Principal Component Analysis (PCA) algorithm. find the eigenvalues and corresponding eigenvectors of the covariance matrix.
+(1 Point)
+        </p>
+		<img src="img/img_question_30.png" />
+		  <ul>
+		    <li>6</li>
+		    <li>3</li>
+		    <li>2</li>
+		    <li>7</li>
+		    <li>1</li>
+		    <li>4</li>
+		    <li>5</li>
+		    <li>8</li>
+		  </ul>
+	  </details>
+	</div> 
+	<div>
+	  <details>
+	    <summary>31</summary>
+		<p>
+		Given the data in the Table, reduce the dimension from 2 to 1 using the Principal Component Analysis (PCA) algorithm.  find the transformed data
+(1 Point)
+		</p>
+		<img src="img/img_question_31.png" />
+		  <ul>
+		    <li>2</li>
+		    <li>4</li>
+		    <li>1</li>
+		    <li>3</li>
+		  </ul>
+	  </details>
+	</div> 
+	<div>
+	  <details>
+	    <summary>32</summary>
+		<p>
+		Given the following 3D input data, identify the principal component.  
+
+
+ 1        1          9
+ 2        4          6
+ 3         7         4
+ 4       11        4
+ 5         9         2
+ 
+ (Steps: Centre the data, calculate the sample covariance matrix, calculate the eigen vectors and eigen values, identify the principal component)   
+(1 Point)
+		</p>
+		<img src="img/img_question_32.png" />
+		  <ul>
+		    <li>1</li>
+		    <li>3</li>
+		    <li>4</li>
+		    <li>2</li>
+		  </ul>
+	  </details>
+	</div> 
+	<div>
+	  <details>
+	    <summary>33.</summary>
+		<p>
+		Given the following 3D input data, find the transformed input along the first two principal components.  
+          <p>
+		    <p>1        1          9</p>
+			<p>2        4          6</p>
+			<p>3         7         4</p>
+			<p>4       11        4</p>
+			<p>5         9         2</p>
+		  </p>
+ </p>
+ (Steps: center the data, calculate the sample covariance matrix, calculate the eigen vectors and eigen values, and identify the principal component)
+(1 Point)
+		</p>
+		<img src="img/img_question_33.png" />
+		  <ul>
+		    <li>2</li>
+		    <li>4</li>
+		    <li>1</li>
+		    <li>3</li>
+		  </ul>
+	  </details>
+	</div> 
+  </body>
+</html>
+<!--
+	<div>
+	  <details>
+	    <summary></summary>
+		<img src="img/img_question_.png" />
+		  <ul>
+		  </ul>
+	  </details>
+	</div> 
+--->
