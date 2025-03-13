@@ -1,0 +1,1 @@
+  - https://ocw.mit.edu/courses/9-40-introduction-to-neural-computation-spring-2018/a6e8bfd0a1d77c92718a3370581f9490_MIT9_40S18_Lec16.pdf

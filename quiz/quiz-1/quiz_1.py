@@ -48,15 +48,88 @@ def support_vm(qno):
                         found = True
                 if not found:
                     print(j)
+        case 6:
+            model = svm.SVC()
+            model.fit(x_train, Y_train)
+            print(f"{qno}. The number of data points which are not support vectors for the model:")
+            count = 0
+            for indx,d in x_train.iterrows():
+                found = False
+                da = np.array(d)
+                for i in model.support_vectors_:
+                    if np.array_equal(da,i):
+                        found = True
+                        break
+                if not found:
+                    count += 1
+            print(f"Count: {count}")
     
+def nn1(qno):
+    """
+    """
+    def sigmoid(X):
+        return 1/(1 + np.exp(-X))
+        
+    match(qno):
+        case 9:
+            X = np.array([1, 1, 1])
+            print(X)
+            W1 = np.array([[1, 1, 2],[3, 1, 1],[1, 2, 3]])
+            W2 = np.array([[1, 1, 2], [3, 1, 1]])
+            W3 = np.array([5, 2])
+            Y = np.round(np.matmul(W1,X), decimals=3)
+            print(Y)
+            Y = np.round(sigmoid(Y),decimals=3)
+            print(Y)
+            Y = np.round(np.matmul(W2, Y), decimals=3)
+            print(Y)
+            Y = np.round(sigmoid(Y), decimals=3)
+            print(Y)
+            Y = np.round(np.matmul(W3, Y), decimals=3)
+            print(Y)
+        case 10:
+            X = np.array([1, 1, 1])
+            Ytarget = 10
+            W1 = np.array([[1, 1, 2],[3, 1, 1],[1, 2, 3]])
+            W2 = np.array([[1, 1, 2], [3, 1, 1]])
+            W3 = np.array([2, 5])
+            Ypred = np.round(np.matmul(W1,X), decimals=3)
+            Ypred = np.round(sigmoid(Ypred),decimals=3)
+            Ypred = np.round(np.matmul(W2, Ypred), decimals=3)
+            Ypred = np.round(sigmoid(Ypred), decimals=3)
+            Ypred = np.round(np.matmul(W3, Ypred), decimals=3)
+            print(Ypred)
+            loss = np.round((Ypred - Ytarget)**2, decimals=3)
+            print(f"{qno}. Loss: {loss}")
+        case 11:
+            X = np.array([1, 1, 1])
+            Ytarget = 8
+            roff = 3
+            W1 = np.array([[1, 1, 2],[3, 1, 1],[1, 2, 3]])
+            W2 = np.array([[1, 1, 2], [3, 1, 1]])
+            W3 = np.array([3, 4])
+            Ypred = np.round(np.matmul(W1,X), decimals=roff)
+            Ypred = np.round(sigmoid(Ypred),decimals=roff)
+            Ypred = np.round(np.matmul(W2, Ypred), decimals=roff)
+            Ypred = np.round(sigmoid(Ypred), decimals=roff)
+            Ypred = np.round(np.matmul(W3, Ypred), decimals=roff)
+            print(Ypred)
+            grad = np.round(2*(Ypred - Ytarget), decimals=roff)
+            print(f"{qno}. Gradient dL/dYpred: {grad}")
 
 
 def main(qno):
     """
     """
     match qno:
-        case 2 | 3 | 4 | 5:
+        case 1 | 7 | 8:
+            print("NOT A NUMERICAL QUESTION")
+        case 2 | 3 | 4 | 5 | 6:
             support_vm(qno)
+        case 9 | 10 | 11:
+            nn1(qno)
+        case _:
+            print("NOT IMPLEMENTED!!")
         
             
 
