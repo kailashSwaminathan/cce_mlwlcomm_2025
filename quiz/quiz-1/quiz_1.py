@@ -249,6 +249,54 @@ def qno24():
         errs.append(e)
     for e,a,b in zip(errs,aas,bs):
         print(f"Error: {e} for a: {a}, b: {b}")
+        
+def qno25_26(qno):
+    """
+    """
+    #from collections import Counter
+    
+    x_train = [[2,1],[5,2],[6,3],[3,5],[8,4],[1,9]]
+    y_train = [1.5,1.8,3.2,3.7,4.4,2.7]
+    xtest = [3,7]
+    distances = [np.sqrt(np.sum([(j - i)**2 for j,i in zip(xtest,xt)])) for xt in x_train]
+    match(qno):
+        case 25:
+            for x,d in zip(x_train, distances):
+                print(f"x: {x}, d = {d}")
+        case 26:
+                k_indx = np.argsort(distances)[:3]
+                k_nearest = [y_train[i] for i in k_indx]
+                print(np.mean(k_nearest))
+                
+                
+                from sklearn.neighbors import KNeighborsRegressor
+                
+                knn = KNeighborsRegressor(n_neighbors=3)
+                knn.fit(x_train, y_train)
+                ypred = knn.predict([xtest,])
+                print(ypred)
+    
+def qno27_28(qno):
+    """
+    """
+    x_train = [[3.393533211,2.331273381],[3.110073483,1.781539638],
+               [1.343808831,3.368360954],[3.582294042,4.67917911],
+               [2.280362439,2.866990263],[7.423436942,4.696522875],
+               [5.745051997,3.533989803],[9.172168622,2.511101045],
+               [7.792783481,3.424088941],[7.939820817,0.791637231]]
+    y_train = [0,0,0,0,0,1,1,1,1,1]
+    x_test = [8.093607318,3.365731514]
+    distances = [np.sqrt(np.sum([(j-i)**2 for j,i in zip(x_test,xt)])) for xt in x_train]
+    match(qno):
+        case 27:            
+            for x,d in zip(x_train, distances):
+                print(f"x: {x}, d = {d}")
+        case 28:
+            k = 4
+            k_indx = np.argsort(distances)[:k]
+            k_nearest = [y_train[i] for i in k_indx]
+            print(np.mean(k_nearest))
+    
     
 
 def main(qno):
@@ -275,6 +323,10 @@ def main(qno):
             qno19()
         case 24:
             qno24()
+        case 25 | 26:
+            qno25_26(qno)
+        case 27 | 28:
+            qno27_28(qno)
         case _:
             print("NOT IMPLEMENTED!!")
         
