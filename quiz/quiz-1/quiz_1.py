@@ -297,6 +297,57 @@ def qno27_28(qno):
             k_nearest = [y_train[i] for i in k_indx]
             print(np.mean(k_nearest))
     
+def qno29_30_31(qno):
+    """
+    """
+    from sklearn.preprocessing import normalize
+    xs = np.array([[2.5,2.4],[0.5,0.72],[2.2,0.92],[1.9,0.23],[3.1,0.02],[2.3,0.71],[2.0,0.61],[1.0,0.11],[1.5,0.6],[1.1,0.9]])
+    x_mean = np.mean(xs,axis=0)
+    x_std = np.std(xs,axis=0)
+    xs = (xs - x_mean)
+    
+    match(qno):
+        case 29:
+            cov = np.matmul(xs.transpose(), xs) / 9
+            print(cov)
+            print(np.cov(xs.transpose()))
+        case 30:
+            covmat = np.cov(xs.transpose())
+            evalues, evectors = np.linalg.eig(covmat)
+            #indx1 = np.argsort(evalues)[::-1][0]
+            #evectors = evectors[:, indx1]
+            #evalues = evalues[indx1]
+            #print(f"Eigen Value of PC1: {evalues}")
+            #print(f"Eigen Vector of PC1: {evectors}")
+            print(evalues)
+            print(evectors)
+        case 31:
+            covmat = np.cov(xs.transpose())
+            evalues, evectors = np.linalg.eig(covmat)
+            tindx = np.argsort(evalues)[::-1][0]
+            evec = evectors[:, tindx]
+            print(np.matmul(xs, evec))
+            
+def qno32_33(qno):
+    """
+    """
+    xs = [[1,1,9],[2,4,6],[3,7,4],[4,11,4],[5,9,2]]
+    x_mean = np.mean(xs, axis=0)
+    x_std = np.std(xs, axis=0)
+    # Center the data
+    xs = (xs - x_mean)
+    covmat = np.cov(xs.transpose())
+    evals, evecs = np.linalg.eig(covmat)
+    # Arrange in descending order of eigen values
+    dindx = np.argsort(evals)[::-1]
+    evecs = evecs[:,dindx]
+    evals = evals[dindx]
+    match(qno):
+        case 32:
+            print(evecs[:,0])
+        case 33:
+            print(np.matmul(xs, evecs[:,[0,1]]))
+    
     
 
 def main(qno):
@@ -327,6 +378,10 @@ def main(qno):
             qno25_26(qno)
         case 27 | 28:
             qno27_28(qno)
+        case 29 | 30 | 31:
+            qno29_30_31(qno)
+        case 32 | 33:
+            qno32_33(qno)
         case _:
             print("NOT IMPLEMENTED!!")
         
