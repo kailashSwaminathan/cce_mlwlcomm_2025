@@ -1,3 +1,6 @@
   - https://ocw.mit.edu/courses/9-40-introduction-to-neural-computation-spring-2018/a6e8bfd0a1d77c92718a3370581f9490_MIT9_40S18_Lec16.pdf
   - Feature Engineering, Bias-Variance Trade Off (https://docs.google.com/presentation/d/1s7aThK9YKjzcJH3STtDR2NN6k9k2_CH6hbXmeVs0ysU/edit#slide=id.g5d103643b4_0_49)
   - Convolutional Neural Networks cheatsheet (https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks#:~:text=Fully%20Connected%20%28FC%29%20The%20fully%20connected%20layer%20%28FC%29,used%20to%20optimize%20objectives%20such%20as%20class%20scores.)
+  - CS231n Convolutional Neural Networks for Visual Recognition(https://cs231n.github.io/convolutional-networks/#comp)
+  - A guide to convolution arithmetic for deep
+ learning (https://arxiv.org/pdf/1603.07285)
