@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<h1> QUIZ - 02 </h1>
+<div>
+<details>
+<summary>1</summary>
+<p>Figure shows four different cases of timing offset, in which the estimated starting point is exact, a little earlier, too early, or a little later than the exact timing instance. In which cases ISI and ICI occur and is it essential to apply a symbol timing offset scheme to prevent STOs?</p>
+<img src="img/img_qno_01.png"></img>
+<ul>
+<li>CASE-IV: ISI occurs, ICI occurs, and need to apply a symbol timing offset scheme to prevent STOs</li><li>CASE-IV: ISI occurs, ICI occurs, and there is no need to apply a symbol timing offset scheme to prevent STOs</li><li>CASE-I: ISI occurs, ICI does not occur, and there is no need to apply a symbol timing offset scheme to prevent STOs</li><li>CASE-II: ISI occurs, ICI occurs, and there is no need to apply a symbol timing offset scheme to prevent STOs</li><li>CASE-I: ISI does not occur, ICI does not occur, and there is no need to apply a symbol timing offset scheme to prevent STOs</li><li>CASE-III: ISI occurs, ICI does not occur, and there is no need to apply a symbol timing offset scheme to prevent STOs</li><li>CASE-III: ISI occurs, ICI occurs, and it is not essential to apply a symbol timing offset scheme to prevent STOs</li><li>CASE-II: ISI occurs, ICI does not occur, and there is no need to apply a symbol timing offset scheme to prevent STOs</li></ul>
+</details>
+<details>
+<summary>2</summary>
+<p>Identify the STO for this</p>
+<img src="img/img_qno_02.png"></img>
+<ul>
+<li>All the above are correct.</li><li>STO can be found by searching for the point where the difference between two blocks of NG samples within these two sliding windows is minimized.</li><li>STO can be found by maximizing the square of the correlation between a block of NG samples (seized in window W1) and another between a block of NG samples (seized in window W2).</li><li>STO can be found by minimizing the difference between NG sample block (seized in window W1) and the conjugate of another NG sample block (seized in window W2).</li></ul>
+</details>
+<details>
+<summary>3</summary>
+<p>What is the center frequency and bandwidth for the below power spectrum which is normalized with noise power    [Note: consider the marked details to solve this.]</p>
+<img src="img/img_qno_03.png"></img>
+<ul>
+<li>Bandwidth = 318 Hz, center frequency=795Hz</li><li>Bandwidth = 1000 Hz, center frequency=5500Hz</li><li>Bandwidth = 1000 Hz, center frequency=5000Hz</li><li>Bandwidth = 159 Hz, center frequency=875Hz</li></ul>
+</details>
+<details>
+<summary>4</summary>
+<p>Write a program to perform Symbol Timing Offset (STO) estimation in an OFDM system using the Convolutional Neural Network (CNN) model. Use a dataset of received OFDM symbols with known STO values to train the CNN. Evaluate the model's estimation accuracy and minimum absolute error(MAE) on a test dataset. Instructions: Generated synthetic OFDM data with random STO values is available in QUIZ 2 folder from files section. details of the generated data listed below
+<ul><li>Number of samples in the data set = 100000</li><li>OFDM size = 64 o   Cp length = 16 </li><li> STO max = 10 # Maximum symbol timing offset </li><li> SNR dB = 20 </li></ul> Split the data into training and testing sets.(use the first 80% as training data set and last 20% dataset as testing data set , don’t change the order of the data and set random seeds for reproducibility (eg: random.seed(42)  # Python random module seed, np.random.seed(42)  # NumPy random module seed, tf.random.set_seed(42)  # TensorFlow random seed))<br>Define a simple CNN architecture suitable for regression.<ul><li>model = models.Sequential() </li><li>Input layer: (timesteps, features)</li><li>First convolutional layer with 32 filters, kernel size 3, ReLU activation</li><li>Second convolutional layer with 64 filters, kernel size 3, ReLU activation</li><li>Flatten the output of the convolutional layers to feed into the dense layers</li><li>Fully connected layer with 128 units and ReLU activation</li><li>Fully connected layer with 256 units and ReLU activation</li><li>Output layer with a single unit (regression output)</li><li>Compile the model with Adam optimizer, MAE loss function, and accuracy metric</li><li>Train the model with epochs=10, batch size=64, validation split=0.1</li></ul><ol><li>Train the CNN to predict STO from the received OFDM symbols.</li><li>Evaluate the Mean Absolute Error (MAE) on the test set.</li></ol></p>
+<ul>
+</ul>
+</details>
+<details>
+<summary>5</summary>
+<p>Write a program to perform Symbol Timing Offset (STO) estimation in an OFDM system using the Convolutional Neural Network (CNN) model. Use a dataset of received OFDM symbols with known STO values to train the CNN. Evaluate the model's estimation accuracy and minimum absolute error(MAE) on a test dataset. Instructions:
+Generated synthetic OFDM data with random STO values is available in QUIZ 2 folder from files section.
+details of the generated data listed below
+<ul><li>Number of samples in the data set = 100000</li><li>OFDM size = 64 o   Cp length = 16</li><li>STO max = 10  # Maximum symbol timing offset</li><li>SNR dB = 20 Split the data into training and testing sets.(use the first 80% as training data set and last 20% as testing data set, don’t change the order of the data and set random seeds for reproducibility (eg: random.seed(42)  # Python random module seed, np.random.seed(42)  # NumPy random module seed, tf.random.set_seed(42)  # TensorFlow random seed))</li></ul>
+Define a simple CNN architecture suitable for regression.
+
+<ul><li>model = models.Sequential()</li><li>Input layer: (timesteps, features)</li><li>First convolutional layer with 32 filters, kernel size 3, ReLU activation</li><li>Second convolutional layer with 64 filters, kernel size 3, ReLU activation</li><li>Flatten the output of the convolutional layers to feed into the dense layers</li><li>Fully connected layer with 128 units and ReLU activation</li><li>Fully connected layer with 256 units and ReLU activation</li><li>Output layer with a single unit (regression output)</li><li>Compile the model with Adam optimizer, MAE loss function, and accuracy metric</li><li>Train the model with epochs=10, batch size=64, validation split=0.1</li></ul>
+<ol><li>Train the CNN to predict STO from the received OFDM symbols.</li><li>Evaluate the Accuracy of the model on the test set.</li><li>Define a threshold within 1 unit which predictions are considered accurate and evaluate the accuracy of the model.</li></ol>
+
+enter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals)
+
+[Note: enter the fractional value not a percentage]</p>
+<ul>
+</ul>
+</details>
+<details>
+<summary>6</summary>
+<p>Using the K-Nearest Neighbours (KNN) algorithm, classify modulation schemes based on their signal constellation points. Generated datasets for BPSK, QPSK, and 8-PSK modulation schemes with AWGN noise is given and use KNN to classify them. Evaluate the classification accuracy.  Instructions:
+<ul><li>Generated 300000 samples for each modulation scheme with AWGN noise with SNR of 10 dB. (open QUIZ 2 folder from files to access the dataset).</li><li>set random seeds for reproducibility (eg: random.seed(42)  # Python random module seed, np.random.seed(42)  # NumPy random module seed, tf.random.set_seed(42)  # TensorFlow random seed)</li><li>Split the dataset into training and testing sets without changing its order.</li><li>Training      data: first 80% data, Testing data: last 20% data</li><li>Use KNN with k=5 neighbours.(  Use   sklearn.neighbors import KNeighborsClassifier and  StandardScaler() is not required.)</li><li>Report      the classification accuracy in percentage</li></ul></p>
+<ul>
+</ul>
+</details>
+<details>
+<summary></summary>
+<p></p>
+<ul>
+</ul>
+</details>
+<details>
+<summary></summary>
+<p></p>
+<ul>
+</ul>
+</details>
+<details>
+<summary></summary>
+<p></p>
+<ul>
+</ul>
+</details>
+<details>
+<summary></summary>
+<p></p>
+<ul>
+</ul>
+</details>
+</div>
+</body>
+</html>
