@@ -55,25 +55,297 @@
 	"mcq": []
   }
  , {
-	"qno": "",
-	"question": "",
+	"qno": "7",
+	"question": "Using the K-Nearest Neighbours (KNN) algorithm, classify modulation schemes based on their signal constellation points. Generated datasets for BPSK, QPSK, and 8-PSK modulation schemes with AWGN noise is given and use KNN to classify them. Evaluate the improvement in classification accuracy for different K_neighbours values.  Instructions:\n<ul><li>Generated 300000 samples for each modulation scheme with AWGN noise with SNR of 10 dB. (open QUIZ 2 folder from files to access the dataset).</li> <li>set random seeds for reproducibility (eg: random.seed(42)  # Python random module seed, np.random.seed(42)  # NumPy random module seed, tf.random.set_seed(42)  # TensorFlow random seed)</li><li>Split - the dataset into training and testing sets without changing its order.</li><li>Training - data: first 80% data, Testing data: last 20% data</li> <li>Use - KNN with k=5 and k=7 neighbours.(  Use   sklearn.neighbors import KNeighborsClassifier and  StandardScaler() is not required.)<li> <li>Report - the percentage improvement in classification accuracy from k=5 to k=7</li></ul>\n\nenter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals) ",
 	"fig":"",
 	"mcq": []
   }
  , {
-	"qno": "",
-	"question": "",
+	"qno": "8",
+	"question": "Implement Support Vector Machine (SVM) classification to detect BPSK signals in the presence of noise and interference. Generate a dataset with BPSK signals and Gaussian noise, train the SVM classifier, and evaluate its performance using a confusion matrix.\nInstructions:\n<ul><li>set random seeds for reproducibility, (use np.random.seed(42)  # NumPy      random module seed)</li> <li>Generate - 10000 samples of BPSK signal {-1 for bit-0 and 1 for bit-1}with noise, classify it as 1(positive class) by adding AWGN noise(not complex noise) such that signal power same as noise power levels.</li> <li>Generate - 10000 samples of noise only samples, classify it as 0 (negative class) by AWGN noise (not complex noise) such that signal power same as noise power levels.</li> <li>Combine - data both positive class data and negative class data. As result you generated 20,000 samples which are noise added BPSK samples and noise only samples.</li> <li>Split - the dataset into training and testing sets without changing its order such that<br>Training data: first 80% data, <br>Testing data: last 20% data <br>Train an SVM classifier with a kernel='rbf',C=1, gamma='scale'</li> <li>Compute - the confusion matrix on the test set. <br>evaluate its performance (nothing but detection accuracy) in percentage using a confusion matrix.</li></ul><br>enter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals)",
 	"fig":"",
 	"mcq": []
   }
  , {
-	"qno": "",
-	"question": "",
+	"qno": "9",
+	"question": "Implement Support Vector Machine (SVM) classification to detect BPSK signals in the presence of noise and interference. Generate a dataset with BPSK signals and Gaussian noise, train the SVM classifier, and evaluate its performance using a confusion matrix.  Instructions:\n<ul><li>set random seeds for reproducibility, (use np.random.seed(42) # NumPy      random module seed)</li> <li>Generate - 10000 samples of BPSK signal {-1 for bit-0 and 1 for bit-1} with noise, classify it as 1(positive class) by adding AWGN noise (not complex noise) such that signal power is twice of noise power levels.</li> <li>Generate - 10000 samples of noise only samples, classify it as 0 (negative class) by AWGN noise (not complex noise) such that signal power is twice of noise power levels.</li> <li>Combine - data both positive class data and negative class data. As result you      generated 20,000 samples which are noise added BPSK samples and noise only      samples.</li> <li>Split - the dataset into training and testing sets without changing its order such that\nTraining data: first 80% data, \nTesting data: last 20% data \nTrain an SVM classifier with a   kernel='poly', degree=3, coef0=1\n</li> <li>Compute - the confusion matrix on the test set.\nevaluate its performance (nothing but detection accuracy) in percentage using a confusion matrix.(1 Point)</li></ul>\nenter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals)",
 	"fig":"",
 	"mcq": []
   }
  , {
-	"qno": "",
+	"qno": "10",
+	"question": "(0.5 Points)",
+	"fig":"img/img_qno_10.png",
+	"mcq": [
+	  "e", "c", "b", "d", "a"
+	]
+  }
+ , {
+	"qno": "11",
+	"question": "Consider an AWGN channel with bandwidth 50 MHZ, received signal power 10 mw. and noise PSD No/2, where No =2*10^(-9) W/Hz. How much does capacity increase by doubling the received power. (0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "By doubling the received power, capacity will increase by 1.824 times",
+	  "By doubling the received power, capacity will increase by 1.924 times",
+	  "None of the above",
+	  "By doubling the received power, capacity will increase by 1.734 times",
+	  "By doubling the received power, capacity will increase by 1.914 times",
+	  "By doubling the received power, capacity will increase by 1.804 times",
+	  "By doubling the received power, capacity will increase by 1.834 times"
+	]
+  }
+ , {
+	"qno": "12",
+	"question": "Consider an AWGN channel with bandwidth 50 MHZ, received signal power 10 mw. and noise PSD No/2, where No =2*10^(-9) W/Hz. How much does capacity increase by channel bandwidth. (0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "By doubling the bandwidth, capacity will increase by 1.15 times",
+	  "By doubling the bandwidth, capacity will increase by 1.12 times",
+	  "By doubling the bandwidth, capacity will increase by 1.06 times",
+	  "By doubling the bandwidth, capacity will increase by 1.02 times",
+	  "None of the above",
+	  "By doubling the bandwidth, capacity will increase by 1.11 times"
+	]
+  }
+ , {
+	"qno": "13",
+	"question": "(0.5 Points)",
+	"fig":"img/img_qno_13.png",
+	"mcq": ["f","b","a","c","e","d"]
+  }
+ , {
+	"qno": "14",
+	"question": "(0.5 Points)",
+	"fig":"img/img_qno_14.png",
+	"mcq": ["b","c","a","d"]
+  }
+ , {
+	"qno": "15",
+	"question": "(0.5 Points)",
+	"fig":"img/img_qno_15.png",
+	"mcq": ["b", "d", "c", "a"]
+  }
+ , {
+	"qno": "16",
+	"question": "(0.5 Points)",
+	"fig":"img/img_qno_16.png",
+	"mcq": ["d", "c", "b", "a"]
+  }
+ , {
+	"qno": "17",
+	"question": "(0.5 Points)",
+	"fig":"img/img_qno_17.png",
+	"mcq": ["d","b","c","a"]
+  }
+ , {
+	"qno": "18",
+	"question": "(0.5 Points)",
+	"fig":"img/img_qno_18.png",
+	"mcq": ["a","b","c","d"]
+  }
+, {
+	"qno": "19",
+	"question": "What is the primary benefit of using machine learning in dynamic power allocation for wireless networks?(0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "Ensures consistent power supply",
+	  "Simplifies the underlying hardware requirements",
+	  "Reduces the necessity for manual intervention",
+	  "Increases the energy consumption"
+	]
+  }
+, {
+	"qno": "20",
+	"question": "Select all that apply: Which techniques are effective for combating the vanishing gradient problem in deep learning models used for wireless signal classification? (0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "Applying gradient clipping",
+	  "Employing batch normalization",
+	  "Using ReLU activation function",
+	  "Decreasing model depth"
+	]
+  }
+, {
+	"qno": "21",
+	"question": "Which type of learning algorithm would be most suitable for channel estimation in noisy environments? (0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "Unsupervised learning",
+	  "Reinforcement learning",
+	  "Supervised learning",
+	  "All the above"
+	]
+  }
+, {
+	"qno": "22",
+	"question": "In reinforcement learning, what is the primary disadvantage of using a high discount factor (close to 1)? (0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "It causes the agent to value immediate rewards over future rewards.",
+	  "It may lead to overestimation of future rewards and unstable policies.",
+	  "It significantly simplifies the policy improvement step.",
+	  "It reduces the learning speed of the agent."
+	]
+  }
+, {
+	"qno": "23",
+	"question": "Which of the following are benefits of using machine learning for dynamic spectrum management? (Select all that apply) (0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "Increased spectral efficiency",
+	  "Reduced computational complexity",
+	  "Decreased reliance on model assumptions",
+	  "Enhanced adaptability to new interference conditions"
+	]
+  }
+, {
+	"qno": "24",
+	"question": "In an adaptive modulation scheme using a deep learning approach, how does a convolutional neural network (CNN) dynamically adjust its filters in a real-time OFDM system affected by rapidly varying channel conditions? (0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "Using dropout techniques to adapt to new channel conditions.",
+	  "Through backpropagation applied in real-time to update the network.",
+	  "By employing a transfer learning model pre-trained on diverse conditions.",
+	  "By recalibrating filter weights in response to detected SNR changes."
+	]
+  }
+, {
+	"qno": "25",
+	"question": "Select all applicable: Which factors must be considered when designing a reinforcement learning agent for dynamic spectrum access in 5G networks?(0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "The partial observability of the spectrum.",
+	  "The continuous state and action spaces.",
+	  "The multi-agent dynamics.",
+	  "The stationarity of the environment."
+	]
+  }
+, {
+	"qno": "26",
+	"question": "Which of the following are essential considerations when implementing a machine learning model for interference mitigation in wireless networks? (Select all that apply) (0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "Model generalization across different network topologies.",
+	  "The non-stationarity of network traffic.",
+	  "Energy consumption of the learning algorithm.",
+	  "Real-time processing capabilities."
+	]
+  }
+, {
+	"qno": "27",
+	"question": "If a reinforcement learning agent observes a sequence of states and rewards over 100 steps with a discount factor of 0.99, compute the cumulative discounted reward starting from step 50 where the reward is 1 for each step until the end. (0.5 Points)\n\nenter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals)",
+	"fig":"",
+	"mcq": []
+  }
+, {
+	"qno": "28",
+	"question": "What is the primary purpose of adding a cyclic prefix (CP) in an OFDM system? (0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "To simplify the modulation process at the transmitter",
+	  "To increase the bandwidth efficiency of the system.",
+	  "To mitigate the effects of inter-symbol interference caused by multipath fading.",
+	  "To enhance the power efficiency of the transmission."
+	]
+  }
+, {
+	"qno": "29",
+	"question": "Which components are necessary for simulating an OFDM system with channel estimation? (Select all that apply) (0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "An algorithm for generating random data bits",
+	  "A method for power spectral density calculation",
+	  "FFT/IFFT implementation",
+	  "Channel and noise modelling"
+	]
+  }
+, {
+	"qno": "30",
+	"question": "Statement 1:   Increasing the length of the cyclic prefix beyond the delay spread of the channel can enhance the system's performance.\nStatement 2:   The least squares channel estimation method provides an unbiased estimate of the channel in an OFDM system.\n(0.5 Points)",
+	"fig":"",
+	"mcq": [
+	  "Statement 1 is false, Statement 2 is True",
+	  "Statement 1 is True, Statement 2 is false",
+	  "Statement 1 is false, Statement 2 is false",
+	  "Statement 1 is True, Statement 2 is True"
+	]
+  }
+, {
+	"qno": "31",
+	"question": "Model a  Baseline Two–Class Classifier Using a block of N = 1000 symbols per trial and equal priors, simulate the classifier at SNR = 10 dB.\n(For SNR = 10 dB, noise variance σ² = 1/10 = 0.1.)\nQuestion: What is the expected overall classification accuracy in percentage?\n\nUseful data:\nWrite a Python code that generates 1000 symbols for each modulation type, adds noise, applies the classifier (with threshold T = 0.1), and estimates accuracy over 500 Monte Carlo trials.\nBPSK: symbols ±1 (real only)\nQPSK: symbols 1/sqrt(2)*(±1 ± j)\nNoise: complex AWGN (each part variance = noise_var/2)\nReceived signals:\nr_bpsk = bpsk_symbols + noise_bpsk\nr_qpsk = qpsk_symbols + noise_qpsk\n  Decisions: if the average imaginary part of the received signals < threshold, decide BPSK; else, QPSK.\nUse np.random.seed(42) for reproducibility.\n\n(1 Point)",
+	"fig":"",
+	"mcq": []
+  }
+, {
+	"qno": "32",
+	"question": "Model  a Baseline Two–Class Classifier Using a block of N = 1000 symbols per trial and equal priors, simulate the classifier at SNR = 10 dB.\n(For SNR = 10 dB, noise variance σ² = 1/10 = 0.1.)\nEach transmitted symbol is multiplied by a random complex gain h ~ CN(0,1) (mean power 1).\nThe received signal is:\nr = h·s + w\n\nQuestion: What is the expected overall classification accuracy in percentage?\n\nUseful data:\nWrite a Python code that generates 1000 symbols for each modulation type, adds noise, applies the classifier (with threshold T = 0.1), and estimates accuracy over 500 Monte Carlo trials.\nBPSK: symbols ±1 (real only)\n\nQPSK: symbols 1/sqrt2*(±1 ± j)\n\nNoise: complex AWGN (each part variance = noise_var/2)\n\nReceived signals:\n\nr_bpsk = h*bpsk_symbols + noise_bpsk\n\nr_qpsk = h*qpsk_symbols + noise_qpsk\n\nDecisions: if the average imaginary part of the received signals < threshold, decide BPSK; else, QPSK.\n\nUse np.random.seed(42) for reproducibility.\n(1 Point)",
+	"fig":"",
+	"mcq": []
+  }
+, {
+	"qno": "33",
+	"question": "Consider the following new modulation classification model.\nThree modulation schemes are used: BPSK, QPSK, and 16-QAM.\nEach signal is generated as a sequence of 1024 symbols with two channels (representing the In-phase and Quadrature components).<br> The signals for each modulation type are generated as follows: \n<br><ul><li>BPSK: Each symbol is chosen from {+1, –1} for the I‑component, and Q is set to 0.</li> <li>QPSK: Each symbol is chosen from the set {(+1/√2, +1/√2), (+1/√2, –1/√2), (–1/√2, +1/√2), (–1/√2, –1/√2)}.</li> <li>16-QAM: Each symbol is chosen by selecting I and Q independently from {–3, –1, 1, 3} and then scaling the pair by 1/√10 (so that the average power is normalized to 1).  After generation, AWGN noise (added independently to I and Q with variance 0.1, corresponding approximately to an SNR of 10dB for unit-power signals) is added to each signal.</li></ul> <br> The dataset is split as follows: <ul><li>Training set: 3000 examples per modulation type (total 9000 examples).</li> <li>Test set: 1000 examples per modulation type (total 3000 examples).</li> A simple Convolutional Neural Network (CNN) is then built with the following architecture:  <ol><li>Input Layer: Accepts data of shape (1024, 2).</li> <li>Convolutional Layer: 32 filters, kernel size = 8,      ReLU activation.</li> <li>MaxPooling1D: Pool size = 2.</li> <li>Flatten Layer.</li> <li>Dense Layer: 64 units, ReLU activation.</li> <li>Output Dense Layer: 3 units with softmax activation (one unit per modulation type).</li></ol> The model is compiled using the Adam optimizer and categorical crossentropy loss and is trained for 10 epochs, validation_split=0.1. <br> After running the simulation described above, which of the following is closest to the test classification accuracy of the model? Useful data: <br> Write Python code, generate the synthetic dataset, build and train the CNN model, and then evaluate the test accuracy. Use np.random.seed(42) and tf.random.set_seed(42)   for reproducibility. Fit model with verbose=1, Evaluate model with verbose=0. <br> (1 Point)   ",
+	"fig":"",
+	"mcq": [
+	  "65-70%",
+	  "70-73%",
+	  "60-63%",
+	  "90-93%",
+	  "75-80%",
+	  "95-100%",
+	  "80-83%"
+	]
+  }
+, {
+	"qno": "34",
+	"question": "CNN-LSTM Hybrid for 4-Class Modulation Classification  Model & Simulation Setup: <br> You are given four modulation schemes: <ul><li>BPSK: I ∈ {+1, –1}, Q = 0</li> <li>QPSK: I, Q ∈ {+1/√2, –1/√2}</li> <li>16-QAM: I, Q ∈ {–3, –1, 1, 3} scaled by 1/√10</li> <li>8-PSK: Phases uniformly spaced (each symbol = exp(j·θ) with θ = 2πk/8, k=0,…,7)  Each sample is a sequence of 1024 complex symbols represented as (1024, 2) (columns for I and Q). AWGN with variance 0.2 (roughly 7dB SNR) is added independently to I and Q. </li> </ul> The dataset is divided into: <ul><li>Training: 2000 examples per class (total 8000)</li> <li>Test: 500 examples per class (total 2000)</li></ul>  The model architecture is as follows:  <ol> <li> CNN Block <ul><li>Conv1D with 64 filters, kernel size = 5, ReLU activation</li> <li>MaxPooling1D with pool size = 2</li></ul></li> <li>LSTM Block: <ul><li>LSTM layer with 50 units</li></ul></li> <li>Dense Block:<ul><li>Dense layer with 64 units (ReLU)</li><li>Output Dense layer with 4 units and softmax activation</li></ul></li></ol> The network is compiled with Adam optimizer and categorical crossentropy loss and trained for 10 epochs with a batch size of 64 and validation_split=0.1. <br> After running the simulation, which of the following is closest to the test classification accuracy? <br> Useful data: <br>Write Python code, generate the synthetic dataset, build and train the model, and then evaluate the test accuracy. <br>Use np.random.seed(42) and tf.random.set_seed(42)   for reproducibility.  Fit model with verbose=1, Evaluate model with verbose=0. (1 Point)",
+	"fig":"",
+	"mcq": ["~70%","~40%","~90%","~80%","~60%","~50%","~20%","~30%"]
+  }
+, {
+	"qno": "35",
+	"question": "",
+	"fig":"",
+	"mcq": []
+  }
+, {
+	"qno": "36",
+	"question": "",
+	"fig":"",
+	"mcq": []
+  }
+, {
+	"qno": "37",
+	"question": "",
+	"fig":"",
+	"mcq": []
+  }
+, {
+	"qno": "38",
+	"question": "",
+	"fig":"",
+	"mcq": []
+  }
+, {
+	"qno": "39",
+	"question": "",
+	"fig":"",
+	"mcq": []
+  }
+, {
+	"qno": "40",
+	"question": "",
+	"fig":"",
+	"mcq": []
+  }
+, {
+	"qno": "41",
+	"question": "",
+	"fig":"",
+	"mcq": []
+  }
+, {
+	"qno": "42",
 	"question": "",
 	"fig":"",
 	"mcq": []

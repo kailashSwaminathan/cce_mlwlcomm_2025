@@ -58,6 +58,261 @@ enter a numerical answer up to two decimals only (i.e., truncate your answer up 
 </ul>
 </details>
 <details>
+<summary>7</summary>
+<p>Using the K-Nearest Neighbours (KNN) algorithm, classify modulation schemes based on their signal constellation points. Generated datasets for BPSK, QPSK, and 8-PSK modulation schemes with AWGN noise is given and use KNN to classify them. Evaluate the improvement in classification accuracy for different K_neighbours values.  Instructions:
+<ul><li>Generated 300000 samples for each modulation scheme with AWGN noise with SNR of 10 dB. (open QUIZ 2 folder from files to access the dataset).</li> <li>set random seeds for reproducibility (eg: random.seed(42)  # Python random module seed, np.random.seed(42)  # NumPy random module seed, tf.random.set_seed(42)  # TensorFlow random seed)</li><li>Split - the dataset into training and testing sets without changing its order.</li><li>Training - data: first 80% data, Testing data: last 20% data</li> <li>Use - KNN with k=5 and k=7 neighbours.(  Use   sklearn.neighbors import KNeighborsClassifier and  StandardScaler() is not required.)<li> <li>Report - the percentage improvement in classification accuracy from k=5 to k=7</li></ul>
+
+enter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals) </p>
+<ul>
+</ul>
+</details>
+<details>
+<summary>8</summary>
+<p>Implement Support Vector Machine (SVM) classification to detect BPSK signals in the presence of noise and interference. Generate a dataset with BPSK signals and Gaussian noise, train the SVM classifier, and evaluate its performance using a confusion matrix.
+Instructions:
+<ul><li>set random seeds for reproducibility, (use np.random.seed(42)  # NumPy      random module seed)</li> <li>Generate - 10000 samples of BPSK signal {-1 for bit-0 and 1 for bit-1}with noise, classify it as 1(positive class) by adding AWGN noise(not complex noise) such that signal power same as noise power levels.</li> <li>Generate - 10000 samples of noise only samples, classify it as 0 (negative class) by AWGN noise (not complex noise) such that signal power same as noise power levels.</li> <li>Combine - data both positive class data and negative class data. As result you generated 20,000 samples which are noise added BPSK samples and noise only samples.</li> <li>Split - the dataset into training and testing sets without changing its order such that<br>Training data: first 80% data, <br>Testing data: last 20% data <br>Train an SVM classifier with a kernel='rbf',C=1, gamma='scale'</li> <li>Compute - the confusion matrix on the test set. <br>evaluate its performance (nothing but detection accuracy) in percentage using a confusion matrix.</li></ul><br>enter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals)</p>
+<ul>
+</ul>
+</details>
+<details>
+<summary>9</summary>
+<p>Implement Support Vector Machine (SVM) classification to detect BPSK signals in the presence of noise and interference. Generate a dataset with BPSK signals and Gaussian noise, train the SVM classifier, and evaluate its performance using a confusion matrix.  Instructions:
+<ul><li>set random seeds for reproducibility, (use np.random.seed(42) # NumPy      random module seed)</li> <li>Generate - 10000 samples of BPSK signal {-1 for bit-0 and 1 for bit-1} with noise, classify it as 1(positive class) by adding AWGN noise (not complex noise) such that signal power is twice of noise power levels.</li> <li>Generate - 10000 samples of noise only samples, classify it as 0 (negative class) by AWGN noise (not complex noise) such that signal power is twice of noise power levels.</li> <li>Combine - data both positive class data and negative class data. As result you      generated 20,000 samples which are noise added BPSK samples and noise only      samples.</li> <li>Split - the dataset into training and testing sets without changing its order such that
+Training data: first 80% data, 
+Testing data: last 20% data 
+Train an SVM classifier with a   kernel='poly', degree=3, coef0=1
+</li> <li>Compute - the confusion matrix on the test set.
+evaluate its performance (nothing but detection accuracy) in percentage using a confusion matrix.(1 Point)</li></ul>
+enter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals)</p>
+<ul>
+</ul>
+</details>
+<details>
+<summary>10</summary>
+<p>(0.5 Points)</p>
+<img src="img/img_qno_10.png"></img>
+<ul>
+<li>e</li><li>c</li><li>b</li><li>d</li><li>a</li></ul>
+</details>
+<details>
+<summary>11</summary>
+<p>Consider an AWGN channel with bandwidth 50 MHZ, received signal power 10 mw. and noise PSD No/2, where No =2*10^(-9) W/Hz. How much does capacity increase by doubling the received power. (0.5 Points)</p>
+<ul>
+<li>By doubling the received power, capacity will increase by 1.824 times</li><li>By doubling the received power, capacity will increase by 1.924 times</li><li>None of the above</li><li>By doubling the received power, capacity will increase by 1.734 times</li><li>By doubling the received power, capacity will increase by 1.914 times</li><li>By doubling the received power, capacity will increase by 1.804 times</li><li>By doubling the received power, capacity will increase by 1.834 times</li></ul>
+</details>
+<details>
+<summary>12</summary>
+<p>Consider an AWGN channel with bandwidth 50 MHZ, received signal power 10 mw. and noise PSD No/2, where No =2*10^(-9) W/Hz. How much does capacity increase by channel bandwidth. (0.5 Points)</p>
+<ul>
+<li>By doubling the bandwidth, capacity will increase by 1.15 times</li><li>By doubling the bandwidth, capacity will increase by 1.12 times</li><li>By doubling the bandwidth, capacity will increase by 1.06 times</li><li>By doubling the bandwidth, capacity will increase by 1.02 times</li><li>None of the above</li><li>By doubling the bandwidth, capacity will increase by 1.11 times</li></ul>
+</details>
+<details>
+<summary>13</summary>
+<p>(0.5 Points)</p>
+<img src="img/img_qno_13.png"></img>
+<ul>
+<li>f</li><li>b</li><li>a</li><li>c</li><li>e</li><li>d</li></ul>
+</details>
+<details>
+<summary>14</summary>
+<p>(0.5 Points)</p>
+<img src="img/img_qno_14.png"></img>
+<ul>
+<li>b</li><li>c</li><li>a</li><li>d</li></ul>
+</details>
+<details>
+<summary>15</summary>
+<p>(0.5 Points)</p>
+<img src="img/img_qno_15.png"></img>
+<ul>
+<li>b</li><li>d</li><li>c</li><li>a</li></ul>
+</details>
+<details>
+<summary>16</summary>
+<p>(0.5 Points)</p>
+<img src="img/img_qno_16.png"></img>
+<ul>
+<li>d</li><li>c</li><li>b</li><li>a</li></ul>
+</details>
+<details>
+<summary>17</summary>
+<p>(0.5 Points)</p>
+<img src="img/img_qno_17.png"></img>
+<ul>
+<li>d</li><li>b</li><li>c</li><li>a</li></ul>
+</details>
+<details>
+<summary>18</summary>
+<p>(0.5 Points)</p>
+<img src="img/img_qno_18.png"></img>
+<ul>
+<li>a</li><li>b</li><li>c</li><li>d</li></ul>
+</details>
+<details>
+<summary>19</summary>
+<p>What is the primary benefit of using machine learning in dynamic power allocation for wireless networks?(0.5 Points)</p>
+<ul>
+<li>Ensures consistent power supply</li><li>Simplifies the underlying hardware requirements</li><li>Reduces the necessity for manual intervention</li><li>Increases the energy consumption</li></ul>
+</details>
+<details>
+<summary>20</summary>
+<p>Select all that apply: Which techniques are effective for combating the vanishing gradient problem in deep learning models used for wireless signal classification? (0.5 Points)</p>
+<ul>
+<li>Applying gradient clipping</li><li>Employing batch normalization</li><li>Using ReLU activation function</li><li>Decreasing model depth</li></ul>
+</details>
+<details>
+<summary>21</summary>
+<p>Which type of learning algorithm would be most suitable for channel estimation in noisy environments? (0.5 Points)</p>
+<ul>
+<li>Unsupervised learning</li><li>Reinforcement learning</li><li>Supervised learning</li><li>All the above</li></ul>
+</details>
+<details>
+<summary>22</summary>
+<p>In reinforcement learning, what is the primary disadvantage of using a high discount factor (close to 1)? (0.5 Points)</p>
+<ul>
+<li>It causes the agent to value immediate rewards over future rewards.</li><li>It may lead to overestimation of future rewards and unstable policies.</li><li>It significantly simplifies the policy improvement step.</li><li>It reduces the learning speed of the agent.</li></ul>
+</details>
+<details>
+<summary>23</summary>
+<p>Which of the following are benefits of using machine learning for dynamic spectrum management? (Select all that apply) (0.5 Points)</p>
+<ul>
+<li>Increased spectral efficiency</li><li>Reduced computational complexity</li><li>Decreased reliance on model assumptions</li><li>Enhanced adaptability to new interference conditions</li></ul>
+</details>
+<details>
+<summary>24</summary>
+<p>In an adaptive modulation scheme using a deep learning approach, how does a convolutional neural network (CNN) dynamically adjust its filters in a real-time OFDM system affected by rapidly varying channel conditions? (0.5 Points)</p>
+<ul>
+<li>Using dropout techniques to adapt to new channel conditions.</li><li>Through backpropagation applied in real-time to update the network.</li><li>By employing a transfer learning model pre-trained on diverse conditions.</li><li>By recalibrating filter weights in response to detected SNR changes.</li></ul>
+</details>
+<details>
+<summary>25</summary>
+<p>Select all applicable: Which factors must be considered when designing a reinforcement learning agent for dynamic spectrum access in 5G networks?(0.5 Points)</p>
+<ul>
+<li>The partial observability of the spectrum.</li><li>The continuous state and action spaces.</li><li>The multi-agent dynamics.</li><li>The stationarity of the environment.</li></ul>
+</details>
+<details>
+<summary>26</summary>
+<p>Which of the following are essential considerations when implementing a machine learning model for interference mitigation in wireless networks? (Select all that apply) (0.5 Points)</p>
+<ul>
+<li>Model generalization across different network topologies.</li><li>The non-stationarity of network traffic.</li><li>Energy consumption of the learning algorithm.</li><li>Real-time processing capabilities.</li></ul>
+</details>
+<details>
+<summary>27</summary>
+<p>If a reinforcement learning agent observes a sequence of states and rewards over 100 steps with a discount factor of 0.99, compute the cumulative discounted reward starting from step 50 where the reward is 1 for each step until the end. (0.5 Points)
+
+enter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals)</p>
+<ul>
+</ul>
+</details>
+<details>
+<summary>28</summary>
+<p>What is the primary purpose of adding a cyclic prefix (CP) in an OFDM system? (0.5 Points)</p>
+<ul>
+<li>To simplify the modulation process at the transmitter</li><li>To increase the bandwidth efficiency of the system.</li><li>To mitigate the effects of inter-symbol interference caused by multipath fading.</li><li>To enhance the power efficiency of the transmission.</li></ul>
+</details>
+<details>
+<summary>29</summary>
+<p>Which components are necessary for simulating an OFDM system with channel estimation? (Select all that apply) (0.5 Points)</p>
+<ul>
+<li>An algorithm for generating random data bits</li><li>A method for power spectral density calculation</li><li>FFT/IFFT implementation</li><li>Channel and noise modelling</li></ul>
+</details>
+<details>
+<summary>30</summary>
+<p>Statement 1:   Increasing the length of the cyclic prefix beyond the delay spread of the channel can enhance the system's performance.
+Statement 2:   The least squares channel estimation method provides an unbiased estimate of the channel in an OFDM system.
+(0.5 Points)</p>
+<ul>
+<li>Statement 1 is false, Statement 2 is True</li><li>Statement 1 is True, Statement 2 is false</li><li>Statement 1 is false, Statement 2 is false</li><li>Statement 1 is True, Statement 2 is True</li></ul>
+</details>
+<details>
+<summary>31</summary>
+<p>Model a  Baseline Two–Class Classifier Using a block of N = 1000 symbols per trial and equal priors, simulate the classifier at SNR = 10 dB.
+(For SNR = 10 dB, noise variance σ² = 1/10 = 0.1.)
+Question: What is the expected overall classification accuracy in percentage?
+
+Useful data:
+Write a Python code that generates 1000 symbols for each modulation type, adds noise, applies the classifier (with threshold T = 0.1), and estimates accuracy over 500 Monte Carlo trials.
+BPSK: symbols ±1 (real only)
+QPSK: symbols 1/sqrt(2)*(±1 ± j)
+Noise: complex AWGN (each part variance = noise_var/2)
+Received signals:
+r_bpsk = bpsk_symbols + noise_bpsk
+r_qpsk = qpsk_symbols + noise_qpsk
+  Decisions: if the average imaginary part of the received signals < threshold, decide BPSK; else, QPSK.
+Use np.random.seed(42) for reproducibility.
+
+(1 Point)</p>
+<ul>
+</ul>
+</details>
+<details>
+<summary>32</summary>
+<p>Model  a Baseline Two–Class Classifier Using a block of N = 1000 symbols per trial and equal priors, simulate the classifier at SNR = 10 dB.
+(For SNR = 10 dB, noise variance σ² = 1/10 = 0.1.)
+Each transmitted symbol is multiplied by a random complex gain h ~ CN(0,1) (mean power 1).
+The received signal is:
+r = h·s + w
+
+Question: What is the expected overall classification accuracy in percentage?
+
+Useful data:
+Write a Python code that generates 1000 symbols for each modulation type, adds noise, applies the classifier (with threshold T = 0.1), and estimates accuracy over 500 Monte Carlo trials.
+BPSK: symbols ±1 (real only)
+
+QPSK: symbols 1/sqrt2*(±1 ± j)
+
+Noise: complex AWGN (each part variance = noise_var/2)
+
+Received signals:
+
+r_bpsk = h*bpsk_symbols + noise_bpsk
+
+r_qpsk = h*qpsk_symbols + noise_qpsk
+
+Decisions: if the average imaginary part of the received signals < threshold, decide BPSK; else, QPSK.
+
+Use np.random.seed(42) for reproducibility.
+(1 Point)</p>
+<ul>
+</ul>
+</details>
+<details>
+<summary>33</summary>
+<p></p>
+<ul>
+</ul>
+</details>
+<details>
+<summary></summary>
+<p></p>
+<ul>
+</ul>
+</details>
+<details>
+<summary></summary>
+<p></p>
+<ul>
+</ul>
+</details>
+<details>
+<summary></summary>
+<p></p>
+<ul>
+</ul>
+</details>
+<details>
+<summary></summary>
+<p></p>
+<ul>
+</ul>
+</details>
+<details>
+<summary></summary>
+<p></p>
+<ul>
+</ul>
+</details>
+<details>
 <summary></summary>
 <p></p>
 <ul>
