@@ -21,6 +21,7 @@ def generate_samples(numsamples, mod, a=None):
         case 'bpsk':
             bits = np.random.randint(0,2,numsamples)
             symbols = (2*bits - 1)
+            symbols = symbols.astype(complex)
         case 'qpsk':
             bits = np.random.randint(0, 4, numsamples)
             symbols = np.exp(1j * ( (np.pi/4) + (np.pi/2)*bits ))
@@ -37,19 +38,38 @@ def generate_samples(numsamples, mod, a=None):
             symbols = (2 * np.random.randint(0,4,numsamples) - 3) + 1j * (2 * np.random.randint(0,4,numsamples))
             # normalize power
             symbols = symbols / np.sqrt(10)
+        case '8psk':
+            bits = np.random.randint(0,8,numsamples)
+            symbols = np.exp(1j * ( (2*np.pi/8) * bits) )
         case _:
             print(f'{mod} Not implemented. Possible values (bpsk | qpsk | 16qam)')
             return None
             
     return symbols
+    
+def create_modulation_data(numsamples, numsymbols, modlist, noisevar=1, noisemean=0, snrdb=0):
+    """
+    """
+    mod_data = np.empty((0,numsymbols))
+    for indx,modtype in enumerate(modlist):
+        sigdata = generate_samples((numsamples * numsymbols), modtype)
+        noise = generate_awgn((numsamples * numsymbols), mean=noisemean, variance=noisevar, snrdb=snrdb)
+        sigdata += noise
+        sigdata = sigdata.reshape(numsamples,numsymbols)
+        mod_data = np.concatenate([mod_data, sigdata])
+    return mod_data    
 
 
+def _test_8psk(numsamples):
+    """
+    """
+    data = generate_samples(numsamples, '8psk')
+    return data
+    
 
 if __name__ == "__main__":
     numsamples = 1000
-    symbols = generate_samples(numsamples,'bpsk')
-    noise = generate_awgn(numsamples,variance=0.1,snrdb=5)
-    symbols = symbols.astype(complex) + noise
+    symbols = _test_8psk(numsamples)
     print(f'Power: {np.var(symbols)}')
     plt.plot(np.real(symbols), np.imag(symbols),'g*')
     plt.show()
