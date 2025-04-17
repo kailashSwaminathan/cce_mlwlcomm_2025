@@ -26,16 +26,8 @@ def generate_samples(numsamples, mod, a=None):
             bits = np.random.randint(0, 4, numsamples)
             symbols = np.exp(1j * ( (np.pi/4) + (np.pi/2)*bits ))
         case '16qam':
-            # mappingTable = [
-                # -3-3j, -3-1j, -3+3j, -3+1j,
-                # -1-3j, -1-1j, -1+3j, -1+1j,
-                 # 3-3j,  3-1j,  3+3j,  3+1j,
-                 # 1-3j,  1-1j,  1+3j,  1+1j 
-            # ]
-            # bits = np.random.randint(0,16, numsamples)
-            # symbols = [(1/np.sqrt(10))*mappingTable[i] for i in bits]
             # generate random 16-QAM symbols
-            symbols = (2 * np.random.randint(0,4,numsamples) - 3) + 1j * (2 * np.random.randint(0,4,numsamples))
+            symbols = (2 * np.random.randint(0,4,numsamples) - 3) + 1j * (2 * np.random.randint(0,4,numsamples) - 3)
             # normalize power
             symbols = symbols / np.sqrt(10)
         case '8psk':
@@ -47,14 +39,15 @@ def generate_samples(numsamples, mod, a=None):
             
     return symbols
     
-def create_modulation_data(numsamples, numsymbols, modlist, noisevar=1, noisemean=0, snrdb=0):
+def create_modulation_data(numsamples, numsymbols, modlist, add_noise=1, noisevar=1, noisemean=0, snrdb=0):
     """
     """
     mod_data = np.empty((0,numsymbols))
     for indx,modtype in enumerate(modlist):
         sigdata = generate_samples((numsamples * numsymbols), modtype)
-        noise = generate_awgn((numsamples * numsymbols), mean=noisemean, variance=noisevar, snrdb=snrdb)
-        sigdata += noise
+        if add_noise:
+            noise = generate_awgn((numsamples * numsymbols), mean=noisemean, variance=noisevar, snrdb=snrdb)
+            sigdata += noise
         sigdata = sigdata.reshape(numsamples,numsymbols)
         mod_data = np.concatenate([mod_data, sigdata])
     return mod_data    
