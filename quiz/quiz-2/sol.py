@@ -4,6 +4,7 @@ import random
 
 import qlearn
 import cnn
+import nn
 
 def sol_42():
     """
@@ -71,6 +72,12 @@ def main(qno):
     match(qno):
         case '33':
             cnn.sol_33()
+        case '34':
+            cnn.sol_34()
+        case '35':
+            nn.sol_35()
+        case '36':
+            cnn.sol_36()
         case '42':
             qtable = qlearn.solution()
             indx = np.where(qtable == np.max(qtable))

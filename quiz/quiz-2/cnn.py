@@ -149,9 +149,121 @@ def sol_34():
     results = dlmodel.evaluate(x_test, y_test, verbose=0)
     print(f"Accuracy : {results[1]*100}%")
     
+def sol_36():
+    """
+    """
+    # set seed for reproducibility
+    #random.seed(42)
+    seedval = 321
+    random.seed(seedval)
+    np.random.seed(seedval)
+    tf.random.set_seed(seedval)
     
+    def create_data():
+        """
+        """
+        # tx1 samples
+        qpsktx1sym = np.exp(1j*(np.pi/4 + (np.pi/2)*np.random.randint(0,4,totalsize))).reshape((num_samples,num_symbols))
+        qpsktx1labels = np.array([0]*num_samples)
+        qam16tx1sym = (    (2*np.random.randint(0,4,totalsize) - 3) + \
+                        1j*(2*np.random.randint(0,4,totalsize) - 3)) / np.sqrt(10) 
+        qam16tx1sym = qam16tx1sym.reshape((num_samples,num_symbols))
+        qam16tx1labels = np.array([1]*num_samples)
+        # tx2 samples
+        qpsktx2sym = np.exp(1j*(np.pi/4 + (np.pi/2)*np.random.randint(0,4,totalsize))).reshape((num_samples,num_symbols))
+        qpsktx2labels = np.array([0]*num_samples)
+        qam16tx2sym = (    (2*np.random.randint(0,4,totalsize) - 3) + \
+                        1j*(2*np.random.randint(0,4,totalsize) - 3)) / np.sqrt(10) 
+        qam16tx2sym = qam16tx2sym.reshape((num_samples,num_symbols))
+        qam16tx2labels = np.array([1]*num_samples)
+        
+        data_tx1 = np.concatenate([qpsktx1sym, qam16tx1sym])
+        data_labels_tx1 = np.concatenate([qpsktx1labels, qam16tx1labels])
+        data_tx2 = np.concatenate([qpsktx2sym, qam16tx2sym])
+        data_labels_tx2 = np.concatenate([qpsktx2labels,qam16tx2labels])
+        
+        x_tx1_train, x_tx1_test, y_tx1_train, y_tx1_test = train_test_split(data_tx1, data_labels_tx1, test_size=0.25, random_state=seedval)
+        x_tx2_train, x_tx2_test, y_tx2_train, y_tx2_test = train_test_split(data_tx2, data_labels_tx2, test_size=0.25, random_state=seedval)
+        
+        s_train = np.array([[i,k] for i,k in zip(x_tx1_train,x_tx2_train)])
+        s_test = np.array([[i,k] for i,k in zip(x_tx1_test,x_tx2_test)])
+        y_train = np.array([[i,j] for i,j in zip(y_tx1_train, y_tx2_train)])
+        y_test = np.array([[i,j] for i,j in zip(y_tx1_test, y_tx2_test)])
+        return s_train, s_test, y_train, y_test
+        
+    def create_rayleigh():
+        """
+        """
+        chsize = num_tx*num_rx*num_samples*num_mod
+        chanresp = (np.random.normal(size=chsize) + 1j * np.random.normal(size=chsize)).reshape((num_samples*num_mod,num_tx,num_rx))
+        ch_train, ch_test, _, _ = train_test_split(chanresp, np.zeros((num_samples*num_mod)), test_size=0.25, random_state=seedval)
+        return ch_train, ch_test
+
+    def create_noise():
+        """
+        """
+        w_tx1 = np.random.normal(scale=np.sqrt(0.1),size=totalsize*num_mod).reshape((num_samples*num_mod, num_symbols))
+        w_tx2 = np.random.normal(scale=np.sqrt(0.1),size=totalsize*num_mod).reshape((num_samples*num_mod, num_symbols))
+        w_tx1_train, w_tx1_test, _, _ = train_test_split(w_tx1, np.zeros((num_samples*num_mod)), test_size=0.25, random_state=seedval)
+        w_tx2_train, w_tx2_test, _, _ = train_test_split(w_tx2, np.zeros((num_samples*num_mod)), test_size=0.25, random_state=seedval)
+        
+        w_train = np.array([[i,k] for i,k in zip(w_tx1_train,w_tx2_train)])
+        w_test = np.array([[i,k] for i,k in zip(w_tx1_test,w_tx2_test)])
+        return w_train, w_test
+        
+    def create_model():
+        """
+        """
+        model = Sequential()
+        model.add(InputLayer((1024,4)))
+        model.add(Conv1D(32,5,activation='relu'))
+        model.add(MaxPooling1D(pool_size=2))
+        model.add(Flatten())
+        model.add(Dense(units=64,activation='relu'))
+        # output layer
+        model.add(Dense(units=2,activation='softmax'))
+        model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
+        return model
+        
+    num_train = 3000
+    num_test = 1000
+    num_samples = num_train + num_test
+    num_symbols = 1024
+    num_mod = 2
+    num_tx = 2
+    num_rx = 2
+    totalsize = num_samples * num_symbols
+    # data and labels
+    s_train, s_test, y_train, y_test = create_data()
+    print(f's_train: {s_train.shape}\ts_test: {s_test.shape}')
+    # Rayleigh fading matrix
+    ch_train, ch_test = create_rayleigh()
+    # noise
+    w_train, w_test = create_noise()
+    # r
+    r_train = np.matmul(ch_train, s_train) + w_train
+    r_test = np.matmul(ch_test, s_test) + w_test
+
+    x_tx1_real_train = np.expand_dims(np.real(r_train[:,0]),axis=-1)
+    x_tx1_imag_train = np.expand_dims(np.imag(r_train[:,0]),axis=-1)
+    x_tx2_real_train = np.expand_dims(np.real(r_train[:,1]),axis=-1)
+    x_tx2_imag_train = np.expand_dims(np.imag(r_train[:,1]),axis=-1)
+    x_train = np.concatenate([x_tx1_real_train,x_tx1_imag_train,x_tx2_real_train,x_tx2_imag_train],axis=-1)
+    print(f'x_train shape: {x_train.shape}')
+
+    x_tx1_real_test = np.expand_dims(np.real(r_test[:,0]),axis=-1)
+    x_tx1_imag_test = np.expand_dims(np.imag(r_test[:,0]),axis=-1)
+    x_tx2_real_test = np.expand_dims(np.real(r_test[:,1]),axis=-1)
+    x_tx2_imag_test = np.expand_dims(np.imag(r_test[:,1]),axis=-1)
+    x_test = np.concatenate([x_tx1_real_test,x_tx1_imag_test,x_tx2_real_test,x_tx2_imag_test],axis=-1)
+    print(f'x_test shape: {x_test.shape}')
     
+    dlmodel = create_model()
+    dlmodel.fit(x_train, y_train, epochs=10, batch_size=64, validation_split=0.1, verbose=1)
+    results = dlmodel.evaluate(x_test, y_test, verbose=0)
+    print(f'Results: Accuracy = {results[1]*100}%')
     
+
     
 if __name__ == "__main__":
     #sol_4_5("data/Q4_STO/STO_data.csv")

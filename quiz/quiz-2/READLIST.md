@@ -12,6 +12,9 @@
   - [AWGN Python: Adding Noise Based on SNR (dB)](https://www.rfwireless-world.com/source-code/python/awgn-python-adding-noise-based-on-snr-db)
   - [BPSK, QPSK, 16QAM, and 64QAM Modulation in Python](https://www.rfwireless-world.com/source-code/python/bpsk-qpsk-qam-modulation-python)
   - [How to Create Additive White Gaussian Noise (AWGN)](https://www.wavewalkerdsp.com/2022/06/01/how-to-create-additive-white-gaussian-noise-awgn/)
+
+## 36. MIMO-Based AMC with Concatenated IQ Data for 2-Class Classification
+  - [Rayleigh Fading Channel Simulation in Python](https://www.rfwireless-world.com/source-code/python/rayleigh-fading-channel-simulation-python)
   
 ## 42. Reinforcement Learning (Q-Learning)
 
