@@ -15,6 +15,9 @@
 
 ## 36. MIMO-Based AMC with Concatenated IQ Data for 2-Class Classification
   - [Rayleigh Fading Channel Simulation in Python](https://www.rfwireless-world.com/source-code/python/rayleigh-fading-channel-simulation-python)
+
+## 37. Residual CNN for 3-Class Classification in a Multipath Fading Channel
+  - [How to build ResNet from Scratch](https://github.com/christianversloot/machine-learning-articles/blob/main/how-to-build-a-resnet-from-scratch-with-tensorflow-2-and-keras.md)
   
 ## 42. Reinforcement Learning (Q-Learning)
 

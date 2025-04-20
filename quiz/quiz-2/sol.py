@@ -78,6 +78,8 @@ def main(qno):
             nn.sol_35()
         case '36':
             cnn.sol_36()
+        case '37':
+            cnn.sol_37()
         case '42':
             qtable = qlearn.solution()
             indx = np.where(qtable == np.max(qtable))
