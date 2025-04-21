@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from tensorflow.keras.models import Sequential, Model
-from tensorflow.keras.layers import InputLayer, Input, Add, Dense, Conv1D, Flatten, MaxPooling1D, LSTM
+from tensorflow.keras.layers import InputLayer, Input, Add, Dense, Conv1D, Flatten, MaxPooling1D, LSTM, Bidirectional, GRU
 import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split
@@ -19,6 +19,60 @@ np.random.seed(42)
 tf.random.set_seed(42)
 
 
+class BaseModulationHelper:
+    """ class for base modulation methods
+    """
+    def __init__(self,nsam,nsym,nmod):
+        self._nsam = nsam # Number of samples
+        self._nsym = nsym # Number of symbols
+        self._nmod = nmod # Number of modulation
+        
+    def create_modulation_data(self, modlist):
+        """ Create modulation data based on a list of modulation types.
+            Supported modulation types bpsk, qpsk, 8psk, 16qam
+        """
+        nsam, nsym, nmod = self._nsam, self._nsym, self._nmod
+        #data, labels = np.empty((0,nsym)), np.empty((0,nmod))
+        if not isinstance(modlist, list):
+            modlist = [modlist]
+        for indx,modtype in enumerate(modlist):
+            sigdata = mod.generate_samples((nsam * nsym), modtype).reshape((nsam,nsym))
+            #data = np.concatenate([data, sigdata])
+            (siglabels := np.array([[0]*nmod]*nsam))[:,indx] = 1
+            #labels = np.concatenate([labels, siglabels])
+            yield sigdata, siglabels
+        #return data, labels
+        
+    def create_IQ_split(self, data):
+        """ Splits the complex into IQ components
+        """
+        data_real = np.expand_dims(np.real(data),axis=-1)
+        data_imag = np.expand_dims(np.imag(data),axis=-1)
+        data_IQ_split = np.concatenate([data_real,data_imag],axis=-1)
+        return data_IQ_split
+
+
+class BaseMLHelper:
+    """ class for Machine Learning
+    """
+    def __init__(self,ntrain,ntest,sval):
+        self._ntrain = ntrain
+        self._ntest = ntest
+        self._seedval = sval
+        
+    @property
+    def get_ntrain(self):
+        return self._ntrain
+        
+    @property
+    def get_ntest(self):
+        return self._ntest
+        
+    def create_validation_split(self, data, labels, vsplit):
+        """
+        """
+        x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=vsplit, random_state=self._seedval)
+        return x_train, y_train, x_test, y_test
 
 def sol_4_5(fname):
     """
@@ -267,26 +321,21 @@ def sol_36():
 class ResCNNModClass:
     """ Residual CNN for 3-Class Classification in a Multipath Fading Channel
     """
-    _num_mod = 3
-    _num_train = 2500
-    _num_test = 1000
-    _num_samples = _num_train + _num_test
-    _num_symbols = 1024
-    _num_multitap = 3
-    
-    def __init__(self):
+    def __init__(self,nsam,nsym,nmod,mtap,sval):
         """
         """
         self._seedval = 42
-        random.seed(self._seedval)
-        np.random.seed(self._seedval)
-        tf.random.set_seed(self._seedval)
+        self._nsam = nsam
+        self._nsym = nsym
+        self._nmod = nmod
+        self._mtap = mtap
         self.create_model()
 
     def create_model(self):
         """
         """
-        dlinput = Input(shape=(ResCNNModClass._num_symbols, 2))
+        nsym, nmod = self._nsym, self._nmod
+        dlinput = Input(shape=(nsym, 2))
         blk1 = Conv1D(32, 7, activation='relu',padding='same')(dlinput)
         blk2 = Conv1D(32, 7, activation='relu', padding='same')(blk1)
         # residual
@@ -295,45 +344,16 @@ class ResCNNModClass:
         b = MaxPooling1D(pool_size=2)(b)
         b = Flatten()(b)
         b = Dense(units=64,activation='relu')(b)
-        b = Dense(units=ResCNNModClass._num_mod, activation='softmax')(b)
+        b = Dense(units=nmod, activation='softmax')(b)
         dlmodel = Model(inputs=dlinput, outputs=b)
         dlmodel.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
         self.dlmodel = dlmodel
         return dlmodel
-                
-    def create_modulation_data(self, modlist):
-        """
-        """
-        nsam, nsym, nmod = ResCNNModClass._num_samples, ResCNNModClass._num_symbols, ResCNNModClass._num_mod
-        data = np.empty((0,nsym))
-        labels = np.empty((0,nmod))
-        if not isinstance(modlist, list):
-            modlist = [modlist]
-        for modtype in modlist:
-            sigdata = mod.generate_samples((nsam * nsym), modtype)
-            sigdata = sigdata.reshape(nsam,nsym)
-            data = np.concatenate([data, sigdata])
-            siglabels = np.array([[0]*nmod]*nsam)
-            match(modtype):
-                case 'bpsk': indx=0
-                case 'qpsk': indx=1
-                case '16qam': indx=2
-                case _: indx=3 # Illegal
-            siglabels[:,indx] = 1
-            labels = np.concatenate([labels, siglabels])
-        return data, labels
 
-        
-    def create_validation_split(self, data, labels):
-        """
-        """
-        x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=(2/7), random_state=self._seedval)
-        return x_train, y_train, x_test, y_test
-        
     def create_channelresp(self):
         """
         """
-        nsam, mtap, nmod = ResCNNModClass._num_samples, ResCNNModClass._num_multitap, ResCNNModClass._num_mod
+        nsam, mtap, nmod = self._nsam, self._mtap, self._nmod
         chsize = nsam * mtap * nmod
         h = np.array(   np.random.normal(scale=np.sqrt(1/3),size=chsize) + \
              1j*np.random.normal(scale=np.sqrt(1/3),size=chsize)).reshape((nsam*nmod,mtap))
@@ -342,51 +362,120 @@ class ResCNNModClass:
     def create_noise(self):
         """
         """
-        nsam, nsym, nmod = ResCNNModClass._num_samples, ResCNNModClass._num_symbols, ResCNNModClass._num_mod
+        nsam, nsym, nmod = self._nsam, self._nsym, self._nmod
         nsize = nsam * nmod
         noise = (np.random.normal(scale=np.sqrt(0.15),size=nsize) + 1j*np.random.normal(scale=np.sqrt(0.15),size=nsize))
         #noise = np.zeros(nsize)
         noise = noise.reshape((nsam*nmod,1))
-        return noise
-        
-    def create_IQ_split(self, data):
-        """
-        """
-        data_real = np.expand_dims(np.real(data),axis=-1)
-        data_imag = np.expand_dims(np.imag(data),axis=-1)
-        data_IQ_split = np.concatenate([data_real,data_imag],axis=-1)
-        return data_IQ_split
-    
+        return noise    
         
     
 def sol_37():
     """ 
     """
-    nsam,nsym,nmod = ResCNNModClass._num_samples, ResCNNModClass._num_symbols, ResCNNModClass._num_mod
-    s = ResCNNModClass()
+    # set for reproducibility
+    sval = 42
+    random.seed(sval)
+    np.random.seed(sval)
+    tf.random.set_seed(sval)
+
+    ntrain, ntest = 2500, 1000
+    nsam,nsym,nmod,mtap = ntrain+ntest, 1024, 3, 3
+    modhelp = BaseModulationHelper(nsam,nsym,nmod)
+    mlhelp = BaseMLHelper(ntrain,ntest,sval)
+    s = ResCNNModClass(nsam,nsym,nmod,mtap,sval)
     h = s.create_channelresp()
     n = s.create_noise()
-    x_train = np.empty((0,nsym))
-    x_test = np.empty((0,nsym))
-    y_train = np.empty((0,nmod))
-    y_test = np.empty((0,nmod))
-    for i,modtype in enumerate(['bpsk','qpsk','16qam']):
-        modata, modlabels = s.create_modulation_data(modtype)
-        xtrain, ytrain, xtest, ytest = s.create_validation_split(modata, modlabels)
+    x_train, x_test = np.empty((0,nsym)), np.empty((0,nsym))
+    y_train, y_test = np.empty((0,nmod)), np.empty((0,nmod))
+    for modata,modlabels in modhelp.create_modulation_data(['bpsk','qpsk','16qam']):
+        xtrain, ytrain, xtest, ytest = mlhelp.create_validation_split(modata, modlabels,(2/7))
         x_train = np.concatenate([x_train, xtrain])
         x_test = np.concatenate([x_test, xtest])
         y_train = np.concatenate([y_train, ytrain])
         y_test = np.concatenate([y_test, ytest])
-    h_train, _, h_test, _ = s.create_validation_split(h,np.zeros((nsam*nmod,1)))
-    n_train, _, n_test, _ = s.create_validation_split(n,np.zeros((nsam*nmod,1)))
+    h_train, _, h_test, _ = mlhelp.create_validation_split(h,np.zeros((nsam*nmod,1)),(2/7))
+    n_train, _, n_test, _ = mlhelp.create_validation_split(n,np.zeros((nsam*nmod,1)),(2/7))
     o_train = np.array([np.convolve(x_train[i], h_train[i], mode='same') + n_train[i] for i in np.arange(x_train.shape[0])])
     o_test = np.array([np.convolve(x_test[i], h_test[i], mode='same') + n_test[i] for i in np.arange(x_test.shape[0])])
     
-    o_train = s.create_IQ_split(o_train)
-    o_test = s.create_IQ_split(o_test)
-    s.dlmodel.fit(o_train,y_train,epochs=5,validation_split=0.1,verbose=1)
+    o_train = modhelp.create_IQ_split(o_train)
+    o_test = modhelp.create_IQ_split(o_test)
+    s.dlmodel.fit(o_train,y_train,epochs=5,batch_size=64,validation_split=0.1,verbose=1)
     results = s.dlmodel.evaluate(o_test, y_test, verbose=0)
     print(f"Accuracy: {results[1]*100}%")
+    
+class BiGRUModClass:
+    """ Bidirectional GRU for 3-Class Classification with Frequency Offset
+    """   
+    def __init__(self,nsam,nsym):
+        """
+        """
+        self._nsam = nsam
+        self._nsym = nsym
+        self.create_model()
+        
+    def create_model(self):
+        """
+        """
+        dlinput = Input(shape=(self._nsym, 2))
+        bigru = Bidirectional(GRU(64))(dlinput)
+        #bi = Bidirectional()(bigru)
+        d = Dense(units=64,activation='relu')(bigru)
+        output = Dense(units=3, activation='softmax')(d)
+        dlmodel = Model(inputs=dlinput, outputs=output)
+        dlmodel.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
+        self.dlmodel = dlmodel
+        return dlmodel
+        
+    def create_cfo(self):
+        """
+        """
+        nsam,nsym,nmod = self._nsam, self._nsym, self._nmod
+        for _ in np.arange(nmod):
+            yield np.array([[np.exp(1j*(2*np.pi*f*n/nsym)) for n in np.arange(nsym)] for f in np.random.uniform(-0.05,0.05,nsam)]).reshape((nsam,nsym))
+            
+    def create_noise(self):
+        nsam, nsym, nmod = self._nsam, self._nsym, self._nmod
+        for _ in np.arange(nmod):
+            #yield np.array([[np.random.normal(scale=np.sqrt(0.1),size=1)] for _ in np.arange(nsam)]).reshape((nsam,1))
+            yield np.array([[np.zeros(nsym)] for _ in np.arange(nsam)]).reshape((nsam,nsym))
+
+def sol_38():
+    """
+    """
+    # set for reproducibility of results
+    sval = 100
+    random.seed(sval)
+    np.random.seed(sval)
+    tf.random.set_seed(sval)
+    # configuration
+    ntrain, ntest, nsym, nmod = 2500, 1000, 512, 3
+    nsam = ntrain + ntest
+    modhelp = BaseModulationHelper(nsam, nsym, nmod)
+    mlhelp = BaseMLHelper(ntrain, ntest, sval)
+    s = BiGRUModClass(nsam, nsym)
+    moddata = ((d,l) for d,l in modhelp.create_modulation_data(['bpsk','qpsk','16qam']))
+    data_w = ((d[0]*cfo + n,d[1]) for d,cfo,n in zip(moddata,s.create_cfo(),s.create_noise()))
+    validdata = (mlhelp.create_validation_split(d,l,(2/7)) for d,l in moddata)
+    x_train, x_test = np.empty((0,nsym)), np.empty((0,nsym))
+    y_train, y_test = np.empty((0,nmod)), np.empty((0,nmod))
+    for xtr,ytr,xtst,ytst in validdata:
+        x_train = np.concatenate([x_train, xtr])
+        x_test = np.concatenate([x_test, xtst])
+        y_train = np.concatenate([y_train, ytr])
+        y_test = np.concatenate([y_test, ytst])        
+    x_train = modhelp.create_IQ_split(x_train)
+    x_test = modhelp.create_IQ_split(x_test)    
+    s.dlmodel.fit(x_train, y_train, epochs=10, batch_size=64, validation_split=0.1, verbose=1)
+    results = s.dlmodel.evaluate(x_test, y_test, verbose=0)
+    print(f"Accuracy: {results[1]*100}%")
+    
+def sol_39():
+    """
+    """
+    
+    
     
         
     
