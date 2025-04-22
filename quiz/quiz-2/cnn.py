@@ -147,9 +147,9 @@ class CNNModClass:
         nsym, nmod = self._nsym, self._nmod
         snr_linear = 10 ** (snrdb/10)
         npower = 1/snr_linear
+        nstd = np.sqrt(noisevar)
         for _ in np.arange(nmod):
-            yield np.array([[np.sqrt(npower) * (np.random.normal(scale=np.sqrt(noisevar), size=nsym) + \
-                                     1j * np.random.normal(scale=np.sqrt(noisevar),size=nsym))] for _ in np.arange(nsam)]).reshape((nsam,nsym))
+            yield np.array([[np.sqrt(npower) * (np.random.normal(0,nstd,nsym) + 1j * np.random.normal(0,nstd,size=nsym))] for _ in np.arange(nsam)]).reshape((nsam,nsym))
                     
     def create_model(self):
         """
@@ -303,8 +303,9 @@ def sol_36():
     def create_noise():
         """
         """
-        w_tx1 = np.random.normal(scale=np.sqrt(0.1),size=totalsize*num_mod).reshape((num_samples*num_mod, num_symbols))
-        w_tx2 = np.random.normal(scale=np.sqrt(0.1),size=totalsize*num_mod).reshape((num_samples*num_mod, num_symbols))
+        nstd = np.sqrt(0.1)
+        w_tx1 = np.random.normal(0,nstd,totalsize*num_mod).reshape((num_samples*num_mod, num_symbols))
+        w_tx2 = np.random.normal(0,nstd,totalsize*num_mod).reshape((num_samples*num_mod, num_symbols))
         w_tx1_train, w_tx1_test, _, _ = train_test_split(w_tx1, np.zeros((num_samples*num_mod)), test_size=0.25, random_state=seedval)
         w_tx2_train, w_tx2_test, _, _ = train_test_split(w_tx2, np.zeros((num_samples*num_mod)), test_size=0.25, random_state=seedval)
         
@@ -403,7 +404,7 @@ class ResCNNModClass:
         nsam, mtap, nmod = self._nsam, self._mtap, self._nmod
         gstd = np.sqrt(1/3)
         for _ in np.arange(nmod):
-            yield np.array([[np.random.normal(scale=gstd) + 1j*np.random.normal(scale=gstd) for _ in np.arange(mtap)] for _ in np.arange(nsam)])
+            yield np.array([[np.random.normal(0,gstd) + 1j*np.random.normal(0,gstd) for _ in np.arange(mtap)] for _ in np.arange(nsam)])
             
     def create_noise(self):
         """
@@ -411,7 +412,7 @@ class ResCNNModClass:
         nsam, nsym, nmod = self._nsam, self._nsym, self._nmod
         nstd = np.sqrt(0.15)
         for _ in np.arange(nmod):
-            yield np.array([[np.random.normal(scale=nstd) + 1j*np.random.normal(scale=nstd) for _ in np.arange(nsym)] for _ in np.arange(nsam)])
+            yield np.array([[np.random.normal(0,nstd) + 1j*np.random.normal(0,nstd) for _ in np.arange(nsym)] for _ in np.arange(nsam)])
         
     
 def sol_37():
@@ -475,8 +476,9 @@ class BiGRUModClass:
             
     def create_noise(self):
         nsam, nsym, nmod = self._nsam, self._nsym, self._nmod
+        nstd = np.sqrt(0.1)
         for _ in np.arange(nmod):
-            yield np.array([[np.random.normal(scale=np.sqrt(0.1),size=nsym) + 1j*np.random.normal(scale=np.sqrt(0.1),size=nsym)] for _ in np.arange(nsam)])
+            yield np.array([[np.random.normal(0,nstd,nsym) + 1j*np.random.normal(0,nstd,nsym)] for _ in np.arange(nsam)])
 
 def sol_38():
     """
@@ -496,18 +498,52 @@ def sol_38():
     moddata = (modhelp.create_modulation_data(['bpsk','qpsk','16qam']))
     data_w = map(lambda d,cfo,n: (d[0]*cfo + n,d[1]), moddata,s.create_cfo(),s.create_noise())
     validdata = (mlhelp.create_validation_split(d,l,(2/7)) for d,l in moddata)
-    x_train, x_test = np.empty((0,nsym)), np.empty((0,nsym))
-    y_train, y_test = np.empty((0,nmod)), np.empty((0,nmod))
-    for xtr,ytr,xtst,ytst in validdata:
-        x_train = np.concatenate([x_train, xtr])
-        x_test = np.concatenate([x_test, xtst])
-        y_train = np.concatenate([y_train, ytr])
-        y_test = np.concatenate([y_test, ytst])        
+    x_train, y_train, x_test, y_test = modhelp.concat_data(validdata)
     x_train = modhelp.create_IQ_split(x_train)
     x_test = modhelp.create_IQ_split(x_test)    
     s.dlmodel.fit(x_train, y_train, epochs=10, batch_size=64, validation_split=0.1, verbose=1)
     results = s.dlmodel.evaluate(x_test, y_test, verbose=0)
     print(f"Accuracy: {results[1]*100}%")
+    
+class CNN_RNNHybridModClass:
+    """ CNN-RNN Hybrid for 2-Class Classification in a Doppler Channel
+    """
+    def __init__(self, nsam, nsym, nmod, sval):
+        self._nsam = nsam
+        self._nsym = nsym
+        self._nmod = nmod
+        self._seedval = sval
+        self.create_model()
+        
+    def create_model(self):
+        """
+        """
+        model = Sequential()
+        model.add(InputLayer((self._nsym,2)))
+        model.add(Conv1D(32,5,activation='relu'))
+        model.add(MaxPooling1D(pool_size=2))
+        model.add(GRU(units=32))
+        model.add(Dense(units=64,activation='relu'))
+        model.add(Dense(units=self._nmod,activation='softmax'))
+        model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
+        self.dlmodel = model
+        return model
+        
+    def create_dopplershift(self):
+        """
+        """
+        nsam,nsym,nmod = self._nsam,self._nsym,self._nmod
+        for _ in np.arange(nmod):
+            yield np.array([[np.exp(1j*2*np.pi*dop*n/nsym) for n in np.arange(nsym)] for dop in np.random.uniform(-0.1,0.1,nsam)])
+    
+    def create_noise(self):
+        """
+        """
+        nsam, nsym, nmod = self._nsam, self._nsym, self._nmod
+        nstd = np.sqrt(0.05)
+        for _ in np.arange(nmod):
+            yield np.array([[np.random.normal(0,nstd) + 1j*np.random.normal(0,nstd) for _ in np.arange(nsym)] for _ in np.arange(nsam)])
+        
     
 def sol_39():
     """
@@ -518,9 +554,21 @@ def sol_39():
     tf.random.set_seed(sval)
     # configuration
     ntrain, ntest, nsym, nmod = 3000, 1000, 512, 2
+    nsam = ntrain+ntest
+    modhelp = BaseModulationHelper(nsam,nsym,nmod)
+    mlhelp = BaseMLHelper(ntrain,ntest,sval)
     
+    s = CNN_RNNHybridModClass(nsam, nsym, nmod, sval)
+    mod_data = (modhelp.create_modulation_data(['qpsk','16qam']))
+    data_dswn = map(lambda d,ds,n: (d[0]*ds+n, d[1]), mod_data, s.create_dopplershift(), s.create_noise())
+    validdata = (mlhelp.create_validation_split(d,l,0.25) for d,l in data_dswn)
+    x_train,y_train,x_test,y_test = modhelp.concat_data(validdata)
+    x_train = modhelp.create_IQ_split(x_train)
+    x_test = modhelp.create_IQ_split(x_test)
+    s.dlmodel.fit(x_train, y_train, epochs=10, batch_size=64, validation_split=0.1, verbose=1)
+    results = s.dlmodel.evaluate(x_test, y_test, verbose=0)
+    print(f"Accuracy: {results[1]*100}%")
     
-        
     
 if __name__ == "__main__":
     #sol_4_5("data/Q4_STO/STO_data.csv")
