@@ -1,6 +1,7 @@
 # READ LIST for QUIZ-2
 
-
+## General
+  - [Introduction to Datasets and Estimators](https://developers.googleblog.com/en/introduction-to-tensorflow-datasets-and-estimators/)
 
 ## 4. STO Estimation in OFDM System
   - [OFDM fundamentals](https://www.nrexplained.com/basics/ofdm)

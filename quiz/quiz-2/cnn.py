@@ -39,6 +39,20 @@ class BaseModulationHelper:
             sigdata = mod.generate_samples((nsam * nsym), modtype).reshape((nsam,nsym))
             (siglabels := np.array([[0]*nmod]*nsam))[:,indx] = 1
             yield sigdata, siglabels
+            
+    def concat_data(self, validdata):
+        """
+        """
+        nsym, nmod = self._nsym, self._nmod
+        x_train, x_test = np.empty((0,nsym)), np.empty((0,nsym))
+        y_train, y_test = np.empty((0,nmod)), np.empty((0,nmod))
+        for xtr,ytr,xtst,ytst in validdata:
+            x_train = np.concatenate([x_train, xtr])
+            x_test = np.concatenate([x_test, xtst])
+            y_train = np.concatenate([y_train, ytr])
+            y_test = np.concatenate([y_test, ytst])            
+        return x_train, y_train, x_test, y_test
+
         
     def create_IQ_split(self, data):
         """ Splits the complex into IQ components
@@ -70,7 +84,7 @@ class BaseMLHelper:
         """
         x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=vsplit, random_state=self._seedval)
         return x_train, y_train, x_test, y_test
-
+        
 def sol_4_5(fname):
     """
     """ 
@@ -182,8 +196,8 @@ def sol_33():
         # x_test = np.concatenate([x_test, xtst])
         # y_test = np.concatenate([y_test, ytst])
 
-    mod_data = ((d,l) for d,l in modhelp.create_modulation_data(['bpsk','qpsk','16qam']))
-    mod_data_noise = ((d[0]+n,d[1]) for d,n in zip(mod_data,s.create_noise(noisevar,snrdb)))
+    mod_data = (modhelp.create_modulation_data(['bpsk','qpsk','16qam']))
+    mod_data_noise = map(lambda d,n: (d[0]+n, d[1]), mod_data, s.create_noise(noisevar,snrdb))
     validdata = (mlhelp.create_validation_split(d,l,0.25) for d,l in mod_data_noise)
     x_train, y_train = np.empty((0,nsym)), np.empty((0,nmod))
     x_test, y_test = np.empty((0,nsym)), np.empty((0,nmod))
@@ -192,7 +206,6 @@ def sol_33():
         y_train = np.concatenate([y_train, ytr])
         x_test = np.concatenate([x_test, xtst])
         y_test = np.concatenate([y_test, ytst])
-
     x_train = modhelp.create_IQ_split(x_train)
     x_test = modhelp.create_IQ_split(x_test)
     s.dlmodel.fit(x_train, y_train, epochs=10, validation_split=0.1, verbose=1)
@@ -388,20 +401,17 @@ class ResCNNModClass:
         """
         """
         nsam, mtap, nmod = self._nsam, self._mtap, self._nmod
-        chsize = nsam * mtap * nmod
-        h = np.array(   np.random.normal(scale=np.sqrt(1/3),size=chsize) + \
-             1j*np.random.normal(scale=np.sqrt(1/3),size=chsize)).reshape((nsam*nmod,mtap))
-        return h
-        
+        gstd = np.sqrt(1/3)
+        for _ in np.arange(nmod):
+            yield np.array([[np.random.normal(scale=gstd) + 1j*np.random.normal(scale=gstd) for _ in np.arange(mtap)] for _ in np.arange(nsam)])
+            
     def create_noise(self):
         """
         """
         nsam, nsym, nmod = self._nsam, self._nsym, self._nmod
-        nsize = nsam * nmod
-        noise = (np.random.normal(scale=np.sqrt(0.15),size=nsize) + 1j*np.random.normal(scale=np.sqrt(0.15),size=nsize))
-        #noise = np.zeros(nsize)
-        noise = noise.reshape((nsam*nmod,1))
-        return noise    
+        nstd = np.sqrt(0.15)
+        for _ in np.arange(nmod):
+            yield np.array([[np.random.normal(scale=nstd) + 1j*np.random.normal(scale=nstd) for _ in np.arange(nsym)] for _ in np.arange(nsam)])
         
     
 def sol_37():
@@ -418,25 +428,18 @@ def sol_37():
     modhelp = BaseModulationHelper(nsam,nsym,nmod)
     mlhelp = BaseMLHelper(ntrain,ntest,sval)
     s = ResCNNModClass(nsam,nsym,nmod,mtap,sval)
-    h = s.create_channelresp()
-    n = s.create_noise()
-    x_train, x_test = np.empty((0,nsym)), np.empty((0,nsym))
-    y_train, y_test = np.empty((0,nmod)), np.empty((0,nmod))
-    for modata,modlabels in modhelp.create_modulation_data(['bpsk','qpsk','16qam']):
-        xtrain, ytrain, xtest, ytest = mlhelp.create_validation_split(modata, modlabels,(2/7))
-        x_train = np.concatenate([x_train, xtrain])
-        x_test = np.concatenate([x_test, xtest])
-        y_train = np.concatenate([y_train, ytrain])
-        y_test = np.concatenate([y_test, ytest])
-    h_train, _, h_test, _ = mlhelp.create_validation_split(h,np.zeros((nsam*nmod,1)),(2/7))
-    n_train, _, n_test, _ = mlhelp.create_validation_split(n,np.zeros((nsam*nmod,1)),(2/7))
-    o_train = np.array([np.convolve(x_train[i], h_train[i], mode='same') + n_train[i] for i in np.arange(x_train.shape[0])])
-    o_test = np.array([np.convolve(x_test[i], h_test[i], mode='same') + n_test[i] for i in np.arange(x_test.shape[0])])
-    
-    o_train = modhelp.create_IQ_split(o_train)
-    o_test = modhelp.create_IQ_split(o_test)
-    s.dlmodel.fit(o_train,y_train,epochs=5,batch_size=64,validation_split=0.1,verbose=1)
-    results = s.dlmodel.evaluate(o_test, y_test, verbose=0)
+
+    mod_data = (modhelp.create_modulation_data(['bpsk','qpsk','16qam']))
+    def convolve_data(d,h,n):
+        return ([np.convolve(d[0][i],h[i],mode='same') + n[i] for i in np.arange(d[0].shape[0])],d[1])
+        
+    recv_data = map(convolve_data , mod_data, s.create_channelresp(), s.create_noise())
+    validdata = (mlhelp.create_validation_split(d,l,(2/7)) for d,l in recv_data)
+    x_train, y_train, x_test, y_test = modhelp.concat_data(validdata)
+    x_train = modhelp.create_IQ_split(x_train)
+    x_test = modhelp.create_IQ_split(x_test)
+    s.dlmodel.fit(x_train,y_train,epochs=5,batch_size=64,validation_split=0.1,verbose=1)
+    results = s.dlmodel.evaluate(x_test, y_test, verbose=0)
     print(f"Accuracy: {results[1]*100}%")
     
 class BiGRUModClass:
@@ -467,13 +470,13 @@ class BiGRUModClass:
         """
         nsam,nsym,nmod = self._nsam, self._nsym, self._nmod
         for _ in np.arange(nmod):
-            yield np.array([[np.exp(1j*(2*np.pi*f*n/nsym)) for n in np.arange(nsym)] for f in np.random.uniform(-0.05,0.05,nsam)]).reshape((nsam,nsym))
+            offsets = np.random.uniform(-0.05,0.05,nsam)
+            yield np.array([[np.exp(1j*(2*np.pi*f*n/nsym)) for n in np.arange(nsym)] for f in offsets])
             
     def create_noise(self):
         nsam, nsym, nmod = self._nsam, self._nsym, self._nmod
         for _ in np.arange(nmod):
-            #yield np.array([[np.random.normal(scale=np.sqrt(0.1),size=1)] for _ in np.arange(nsam)]).reshape((nsam,1))
-            yield np.array([[np.zeros(nsym)] for _ in np.arange(nsam)]).reshape((nsam,nsym))
+            yield np.array([[np.random.normal(scale=np.sqrt(0.1),size=nsym) + 1j*np.random.normal(scale=np.sqrt(0.1),size=nsym)] for _ in np.arange(nsam)])
 
 def sol_38():
     """
@@ -489,8 +492,9 @@ def sol_38():
     modhelp = BaseModulationHelper(nsam, nsym, nmod)
     mlhelp = BaseMLHelper(ntrain, ntest, sval)
     s = BiGRUModClass(nsam, nsym)
-    moddata = ((d,l) for d,l in modhelp.create_modulation_data(['bpsk','qpsk','16qam']))
-    data_w = ((d[0]*cfo + n,d[1]) for d,cfo,n in zip(moddata,s.create_cfo(),s.create_noise()))
+    
+    moddata = (modhelp.create_modulation_data(['bpsk','qpsk','16qam']))
+    data_w = map(lambda d,cfo,n: (d[0]*cfo + n,d[1]), moddata,s.create_cfo(),s.create_noise())
     validdata = (mlhelp.create_validation_split(d,l,(2/7)) for d,l in moddata)
     x_train, x_test = np.empty((0,nsym)), np.empty((0,nsym))
     y_train, y_test = np.empty((0,nmod)), np.empty((0,nmod))
