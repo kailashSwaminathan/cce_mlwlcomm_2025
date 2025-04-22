@@ -27,21 +27,18 @@ class BaseModulationHelper:
         self._nsym = nsym # Number of symbols
         self._nmod = nmod # Number of modulation
         
-    def create_modulation_data(self, modlist):
+    def create_modulation_data(self, modlist, numsamples=None):
         """ Create modulation data based on a list of modulation types.
             Supported modulation types bpsk, qpsk, 8psk, 16qam
         """
-        nsam, nsym, nmod = self._nsam, self._nsym, self._nmod
-        #data, labels = np.empty((0,nsym)), np.empty((0,nmod))
+        nsam = numsamples if numsamples else self._nsam
+        nsym, nmod = self._nsym, self._nmod
         if not isinstance(modlist, list):
             modlist = [modlist]
         for indx,modtype in enumerate(modlist):
             sigdata = mod.generate_samples((nsam * nsym), modtype).reshape((nsam,nsym))
-            #data = np.concatenate([data, sigdata])
             (siglabels := np.array([[0]*nmod]*nsam))[:,indx] = 1
-            #labels = np.concatenate([labels, siglabels])
             yield sigdata, siglabels
-        #return data, labels
         
     def create_IQ_split(self, data):
         """ Splits the complex into IQ components
@@ -118,51 +115,88 @@ def sol_4_5(fname):
     #dlmodel.summary()
     #tf.keras.utils.plot_model(dlmodel, to_file='model.png', show_shapes=True)
     
-def sol_33():
+class CNNModClass:
     """
     """
-    def create_model():
+    def __init__(self,nsam,nsym,nmod):
         """
         """
+        self._nsam = nsam
+        self._nsym = nsym
+        self._nmod = nmod
+        self.create_model()
+        
+    def create_noise(self, noisevar, snrdb, numsamples=None):
+        """
+        """
+        nsam = numsamples if numsamples else self._nsam
+        nsym, nmod = self._nsym, self._nmod
+        snr_linear = 10 ** (snrdb/10)
+        npower = 1/snr_linear
+        for _ in np.arange(nmod):
+            yield np.array([[np.sqrt(npower) * (np.random.normal(scale=np.sqrt(noisevar), size=nsym) + \
+                                     1j * np.random.normal(scale=np.sqrt(noisevar),size=nsym))] for _ in np.arange(nsam)]).reshape((nsam,nsym))
+                    
+    def create_model(self):
+        """
+        """
+        nmod = self._nmod
         model = Sequential()
         model.add(InputLayer((1024,2)))
         numfltrs, krnlsize, activation = 32, 8, 'relu'
-        model.add(Conv1D(numfltrs, krnlsize, activation=activation))
+        model.add(Conv1D(32, 8, activation='relu'))
         model.add(MaxPooling1D(pool_size=2))
         model.add(Flatten())
-        model.add(Dense(units=64, activation=activation))
+        model.add(Dense(units=64, activation='relu'))
         # output layer
-        model.add(Dense(units=3, activation='softmax'))
-        model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc'])
+        model.add(Dense(units=nmod, activation='softmax'))
+        model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+        self.dlmodel = model
         return model
     
-    numsamples = 3000 + 1000 # training and test samples
-    numsymbols = 1024
+def sol_33():
+    """
+    """
+    sval = 42
+    random.seed(sval)
+    np.random.seed(sval)
+    tf.random.set_seed(sval)
+    
+    ntrain, ntest = 3000, 1000
+    nsam, nsym, nmod = ntrain+ntest, 1024, 3
     noisevar, snrdb = 0.1, 10
-    mod_data = mod.create_modulation_data(numsamples, numsymbols, ['bpsk','qpsk','16qam'], noisevar=noisevar,snrdb=snrdb)
-    mod_labels = np.array([[1,0,0]]*numsamples + [[0,1,0]]*numsamples + [[0,0,1]]*numsamples)
-    x_train, x_test, y_train, y_test = train_test_split(mod_data, mod_labels, test_size=0.25)
-    x_train_real = np.expand_dims(np.real(x_train), axis=-1)
-    x_train_imag = np.expand_dims(np.imag(x_train), axis=-1)
-    x_train = np.concatenate([x_train_real, x_train_imag], axis=-1)
-    x_test_real = np.expand_dims(np.real(x_test), axis=-1)
-    x_test_imag = np.expand_dims(np.imag(x_test), axis=-1)
-    x_test = np.concatenate([x_test_real, x_test_imag], axis=-1)
-    #plt.plot(x_train[:,:,0], x_train[:,:,1], 'g*')
-    #plt.plot(x_test[:,:,0], x_test[:,:,1], 'b*')
-    #plt.show()    
-    if os.path.exists("sol_33_dlmodel.keras"):
-        dlmodel = tf.keras.models.load_model("sol_33_dlmodel.keras")
-    else:
-        dlmodel = create_model()
-        #dlmodel.summary()
-        dlmodel.fit(x_train, y_train, epochs=10, validation_split=0.1, verbose=1)
-        dlmodel.save("sol_33_dlmodel.keras")
-    #y_pred = dlmodel.predict(x_test)
-    #y_pred_indx = np.argmax(y_pred, axis=1)
-    #y_test_indx = np.argmax(y_test, axis=1)
-    #correct = np.sum(y_pred_indx == y_test_indx)
-    results = dlmodel.evaluate(x_test, y_test, verbose=0)
+    modhelp = BaseModulationHelper(nsam, nsym, nmod)
+    mlhelp = BaseMLHelper(ntrain, ntest, sval)
+    s = CNNModClass(nsam,nsym,nmod)
+    
+    # mod_data_train = ((d,l) for d,l in modhelp.create_modulation_data(['bpsk','qpsk','16qam'], ntrain))
+    # d_train_wnoise = ((d[0]+n,d[1]) for d,n in zip(mod_data_train,s.create_noise(noisevar,snrdb,ntrain)))
+    # mod_data_test = ((d,l) for d,l in modhelp.create_modulation_data(['bpsk','qpsk','16qam'], ntest))
+    # d_test_wnoise = ((d[0]+n,d[1]) for d,n in zip(mod_data_test,s.create_noise(noisevar,snrdb,ntest))) 
+    # x_train, y_train = np.empty((0,nsym)), np.empty((0,nmod))
+    # for xtr, ytr in d_train_wnoise:
+        # x_train = np.concatenate([x_train, xtr])
+        # y_train = np.concatenate([y_train, ytr])
+    # x_test, y_test = np.empty((0,nsym)), np.empty((0,nmod))
+    # for xtst, ytst in d_test_wnoise:
+        # x_test = np.concatenate([x_test, xtst])
+        # y_test = np.concatenate([y_test, ytst])
+
+    mod_data = ((d,l) for d,l in modhelp.create_modulation_data(['bpsk','qpsk','16qam']))
+    mod_data_noise = ((d[0]+n,d[1]) for d,n in zip(mod_data,s.create_noise(noisevar,snrdb)))
+    validdata = (mlhelp.create_validation_split(d,l,0.25) for d,l in mod_data_noise)
+    x_train, y_train = np.empty((0,nsym)), np.empty((0,nmod))
+    x_test, y_test = np.empty((0,nsym)), np.empty((0,nmod))
+    for xtr,ytr,xtst,ytst in validdata:
+        x_train = np.concatenate([x_train, xtr])
+        y_train = np.concatenate([y_train, ytr])
+        x_test = np.concatenate([x_test, xtst])
+        y_test = np.concatenate([y_test, ytst])
+
+    x_train = modhelp.create_IQ_split(x_train)
+    x_test = modhelp.create_IQ_split(x_test)
+    s.dlmodel.fit(x_train, y_train, epochs=10, validation_split=0.1, verbose=1)
+    results = s.dlmodel.evaluate(x_test, y_test, verbose=0)
     print(f"Accuracy: {results[1]*100}%")
     
 def sol_34():
@@ -474,7 +508,12 @@ def sol_38():
 def sol_39():
     """
     """
-    
+    sval = 200
+    random.seed(sval)
+    np.random.seed(sval)
+    tf.random.set_seed(sval)
+    # configuration
+    ntrain, ntest, nsym, nmod = 3000, 1000, 512, 2
     
     
         
