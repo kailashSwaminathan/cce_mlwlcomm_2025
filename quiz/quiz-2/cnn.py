@@ -18,6 +18,18 @@ random.seed(42)
 np.random.seed(42)
 tf.random.set_seed(42)
 
+def dprint(gendata, c=None):
+    """
+    """
+    cnt = 0
+    for d in gendata:
+        if isinstance(d, np.ndarray):
+            print(d.shape)
+        elif isinstance(d, tuple):
+            print([len(d[i]) if not isinstance(d[i],float) else "NOT A LIST" for i in range(len(d)) ])
+        if c and cnt == c:
+            break
+        cnt += 1
 
 class BaseModulationHelper:
     """ class for base modulation methods
@@ -569,6 +581,80 @@ def sol_39():
     results = s.dlmodel.evaluate(x_test, y_test, verbose=0)
     print(f"Accuracy: {results[1]*100}%")
     
+class CNN_CFOEstimationOFDMClass:
+    """ CNN based CFO estimation of OFDM system
+    """
+    def __init__(self,nsam,nsym,nmod,nsubc):
+        """
+        """
+        self._nsam = nsam
+        self._nsym = nsym
+        self._nsubc = nsubc
+        self._nmod = nmod
+        self.create_model()
+        
+    def create_model(self):
+        """
+        """
+        model = Sequential()
+        model.add(InputLayer((self._nsubc,1)))
+        model.add(Conv1D(16, 5, activation='relu'))
+        model.add(MaxPooling1D(pool_size=2))
+        model.add(Conv1D(32,3, activation='relu'))
+        model.add(Flatten())
+        model.add(Dense(units=64, activation='relu'))
+        model.add(Dense(units=self._nmod, activation='linear'))
+        model.compile(optimizer='adam',loss='mse')
+        self.dlmodel = model
+        return model
+        
+    def create_cfo(self):
+        """
+        """
+        nsam, nsubc, nmod = self._nsam, self._nsubc, self._nmod
+        for _ in np.arange(nmod):
+            cfo = np.random.uniform(-0.05,0.05,nsam)
+            yield (np.array([np.exp(1j*2*np.pi*fo*np.arange(nsubc)/nsubc) for fo in cfo]),cfo)
+        
+    def create_noise(self):
+        """
+        """
+        nsam, nsubc, nmod = self._nsam, self._nsubc, self._nmod
+        nstd=np.sqrt(0.01)
+        for _ in np.arange(nmod):
+            yield  np.array([np.random.normal(0,nstd,nsubc) + 1j*np.random.normal(0,nstd,nsubc) for _ in np.arange(nsam)])
+
+        
+def sol_40():
+    """
+    """
+    sval = 42
+    random.seed(sval)
+    np.random.seed(sval)
+    tf.random.set_seed(sval)
+    
+    ntrain, ntest = 10000, 2000
+    nsubc, nmod, nsym, nmod, nsam = 256, 1, 1, 1, ntrain+ntest
+    modhelp = BaseModulationHelper(nsam, (nsubc*nsym), nmod)
+    mlhelp = BaseMLHelper(ntrain, ntest, sval)
+    s = CNN_CFOEstimationOFDMClass(nsam,nsym,nmod,nsubc)
+    
+    mod_data = (modhelp.create_modulation_data(['qpsk']))
+    mdata_time = map(lambda d: np.fft.ifft(d[0]), mod_data)
+    mdata_cfonoise = map(lambda d,cfo,n: (d*cfo[0] + n, cfo[1]), mdata_time,s.create_cfo(),s.create_noise())
+    fft_data = map(lambda d: (np.abs(np.fft.fft(d[0])), d[1]), mdata_cfonoise)
+        
+    validdata = (mlhelp.create_validation_split(d,l,(1/6)) for d,l in fft_data)
+    x_train, x_test = np.zeros((0, nsubc)), np.zeros((0,nsubc))
+    y_train, y_test = np.zeros(0), np.zeros(0)
+    for xtr,ytr,xtst,ytst in validdata:
+        x_train = np.concatenate([x_train,xtr])
+        y_train = np.concatenate([y_train,ytr])
+        x_test = np.concatenate([x_test, xtst])
+        y_test = np.concatenate([y_test, ytst])
+    s.dlmodel.fit(x_train, y_train, epochs=20, validation_split=0.1, verbose=1)
+    results = s.dlmodel.evaluate(x_test, y_test, verbose=0)
+    print(f'MSE: {results}')
     
 if __name__ == "__main__":
     #sol_4_5("data/Q4_STO/STO_data.csv")
