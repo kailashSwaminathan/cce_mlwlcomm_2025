@@ -645,8 +645,8 @@ def sol_40():
     fft_data = map(lambda d: (np.abs(np.fft.fft(d[0])), d[1]), mdata_cfonoise)
         
     validdata = (mlhelp.create_validation_split(d,l,(1/6)) for d,l in fft_data)
-    x_train, x_test = np.zeros((0, nsubc)), np.zeros((0,nsubc))
-    y_train, y_test = np.zeros(0), np.zeros(0)
+    x_train, x_test = np.empty((0, nsubc)), np.empty((0,nsubc))
+    y_train, y_test = np.empty(0), np.empty(0)
     for xtr,ytr,xtst,ytst in validdata:
         x_train = np.concatenate([x_train,xtr])
         y_train = np.concatenate([y_train,ytr])
@@ -655,6 +655,63 @@ def sol_40():
     s.dlmodel.fit(x_train, y_train, epochs=20, validation_split=0.1, verbose=1)
     results = s.dlmodel.evaluate(x_test, y_test, verbose=0)
     print(f'MSE: {results}')
+    
+class CNN_CFOEstimation_MIMO_OFDMClass:
+    """ CNN-based CFO Estimation for a 2x2 MIMO OFDM System
+    """
+    def __init__(self):
+        """
+        """
+        self.create_model()
+        
+    def create_model(self):
+        """
+        """
+        model = Sequential()
+        model.add(InputLayer((256,2)))
+        model.add(Conv1D(16,5,activation='relu'))
+        model.add(MaxPooling1D(pool_size=2))
+        model.add(Conv1D(32,3,activation='relu'))
+        model.add(Flatten())
+        model.add(Dense(units=64,activation='relu'))
+        model.add(Dense(units=1, activation='linear'))
+        model.compile(optimizer='adam',loss='mse')
+        self.dlmodel = model
+        return model
+
+ 
+def sol_41():
+    """
+    """
+    sval = 42
+    random.seed(sval)
+    np.random.seed(sval)
+    tf.random.set_seed(sval)
+    ntrain, ntest = 8000, 2000
+    nsubc, nsym, nmod, nsam = 256, 1, 1, ntrain+ntest
+    modhelp = BaseModulationHelper(nsam, nsym, nmod)
+    mlhelp = BaseMLHelper(ntrain,ntest,sval)
+    s = CNN_CFOEstimation_MIMO_OFDMClass()
+
+    mdata_tx1 = np.random.choice([(1+1j)/np.sqrt(2),(1-1j)/np.sqrt(2)],nsam*nsubc).reshape((nsam,nsubc)) # shape: (10000, 256)
+    mdata_tx2 = np.random.choice([(1+1j)/np.sqrt(2),(1-1j)/np.sqrt(2)],nsam*nsubc).reshape((nsam,nsubc)) # shape: (10000, 256)
+    ofdmsym_tx1 = np.fft.ifft(mdata_tx1) # shape: (10000, 256)
+    ofdmsym_tx2 = np.fft.ifft(mdata_tx2) # shape: (10000, 256)
+    tx_ofdmsym = np.array([[ofdmsym_tx1[i],ofdmsym_tx2[i]] for i in np.arange(ofdmsym_tx1.shape[0])]) # shape: (10000, 2, 256)
+    chresp = np.array([[np.random.normal(0,1,2)+1j*np.random.normal(0,1,2) for _ in np.arange(2)] for _ in np.arange(nsam)]) # shape: (10000, 2, 2)
+    tx_ofdmsym = np.matmul(chresp, tx_ofdmsym) # shape: (1000,2,256)
+    foffset = np.random.uniform(-0.05,0.05,nsam) # shape: (10000,)
+    cfo = np.array([[np.exp(1j*2*np.pi*foff*np.arange(nsubc)/nsubc)] for foff in foffset]) # shape : (10000, 1, 256)
+    noise = np.array([[np.random.normal(0,np.sqrt(0.01),nsubc)+1*np.random.normal(0,np.sqrt(0.01),nsubc) for _ in np.arange(2)] for _ in np.arange(nsam)]) # shape: (10000, 1, 256)
+    rx_ofdmsym = tx_ofdmsym*cfo + noise # shape: (10000, 2, 256)
+    fftmag = np.abs(np.fft.fft(rx_ofdmsym))
+    x_train, y_train, x_test, y_test = mlhelp.create_validation_split(fftmag,foffset,0.2) # shape: (8000,2,256),(8000,),(2000,2,256),(2000,)
+    x_train, x_test = x_train.transpose(0,2,1), x_test.transpose(0,2,1) # shape: (8000,256,2), (2000,256,2)
+    x_train, x_test = np.expand_dims(x_train, axis=-1), np.expand_dims(x_test, axis=-1) # shape: (8000,256,2,1), (2000,256,2,1)
+    
+    s.dlmodel.fit(x_train, y_train, epochs=20, validation_split=0.1, verbose=1)
+    results = s.dlmodel.evaluate(x_test, y_test)
+    print(f"Mean Squared Error: {results}")
     
 if __name__ == "__main__":
     #sol_4_5("data/Q4_STO/STO_data.csv")
