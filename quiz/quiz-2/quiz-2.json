@@ -1,6 +1,6 @@
 [
   {
-	  "qno": "1",
+	  "qno": "1. Which of these scenarios needs scheme to prevent STO?",
 	  "question": "Figure shows four different cases of timing offset, in which the estimated starting point is exact, a little earlier, too early, or a little later than the exact timing instance. In which cases ISI and ICI occur and is it essential to apply a symbol timing offset scheme to prevent STOs?",
 	  "fig": "img/img_qno_01.png",
 	  "mcq": [
@@ -15,7 +15,7 @@
 	  ]
   }
 , {
-	"qno": "2",
+	"qno": "2. Identify the STO for this",
 	"question": "Identify the STO for this",
 	"fig":"img/img_qno_02.png",
 	"mcq": [
@@ -26,8 +26,8 @@
 	]
   }
 , {
-	"qno": "3",
-	"question": "What is the center frequency and bandwidth for the below power spectrum which is normalized with noise power    [Note: consider the marked details to solve this.]",
+	"qno": "3. Center frequency and bandwidth",
+	"question": "What is the center frequency and bandwidth for the below power spectrum which is normalized with noise power [Note: consider the marked details to solve this.]",
 	"fig":"img/img_qno_03.png",
 	"mcq": [
 	  "Bandwidth = 318 Hz, center frequency=795Hz",
@@ -37,7 +37,7 @@
 	]
   }
   , {
-	"qno": "4",
+	"qno": "4. CNN-based STO estimation in OFDM system",
 	"question": "<h3>Write a program to perform Symbol Timing Offset (STO) estimation in an OFDM system using the Convolutional Neural Network (CNN) model. Use a dataset of received OFDM symbols with known STO values to train the CNN. Evaluate the model's estimation accuracy and minimum absolute error(MAE) on a test dataset.</h3> <h3>Instructions:</h3> Generated synthetic OFDM data with random STO values is available in QUIZ 2 folder from files section. Details of the generated data listed below <ul> <li>Number of samples in the data set = 100000</li> <li>OFDM size = 64</li> <li>Cyclic Prefix length = 16</li> <li> STO max = 10 # Maximum symbol timing offset </li> <li> SNR dB = 20 </li></ul> Split the data into training and testing sets.(Use the first 80% as training data set and last 20% dataset as testing data set, don’t change the order of the data and set random seeds for reproducibility. <p>(eg: random.seed(42)  # Python random module seed <br> np.random.seed(42)  # NumPy random module seed <br> tf.random.set_seed(42)  # TensorFlow random seed))</p> Define a simple CNN architecture suitable for regression.<ul><li>model = models.Sequential() </li><li>Input layer: (timesteps, features)</li><li>First convolutional layer with 32 filters, kernel size 3, ReLU activation</li><li>Second convolutional layer with 64 filters, kernel size 3, ReLU activation</li><li>Flatten the output of the convolutional layers to feed into the dense layers</li><li>Fully connected layer with 128 units and ReLU activation</li><li>Fully connected layer with 256 units and ReLU activation</li><li>Output layer with a single unit (regression output)</li><li>Compile the model with Adam optimizer, MAE loss function, and accuracy metric</li><li>Train the model with epochs=10, batch size=64, validation split=0.1</li></ul> <ol><li>Train the CNN to predict STO from the received OFDM symbols.</li><li>Evaluate the Mean Absolute Error (MAE) on the test set.</li></ol> enter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals)",
 	"fig":"",
 	"mcq": []
@@ -49,14 +49,14 @@
 	"mcq": []
   }
  , {
-	"qno": "6",
-	"question": "Using the K-Nearest Neighbours (KNN) algorithm, classify modulation schemes based on their signal constellation points. Generated datasets for BPSK, QPSK, and 8-PSK modulation schemes with AWGN noise is given and use KNN to classify them. Evaluate the classification accuracy.  Instructions:\n<ul><li>Generated 300000 samples for each modulation scheme with AWGN noise with SNR of 10 dB. (open QUIZ 2 folder from files to access the dataset).</li><li>set random seeds for reproducibility (eg: random.seed(42)  # Python random module seed, np.random.seed(42)  # NumPy random module seed, tf.random.set_seed(42)  # TensorFlow random seed)</li><li>Split the dataset into training and testing sets without changing its order.</li><li>Training      data: first 80% data, Testing data: last 20% data</li><li>Use KNN with k=5 neighbours.(  Use   sklearn.neighbors import KNeighborsClassifier and  StandardScaler() is not required.)</li><li>Report      the classification accuracy in percentage</li></ul>",
+	"qno": "6. KNN-based Modulation Classification",
+	"question": "Using the K-Nearest Neighbours (KNN) algorithm, classify modulation schemes based on their signal constellation points. Generated datasets for BPSK, QPSK, and 8-PSK modulation schemes with AWGN noise is given and use KNN to classify them. Evaluate the classification accuracy. <br> Instructions: <ul> <li>Generated 300000 samples for each modulation scheme with AWGN noise with SNR of 10 dB. (open QUIZ 2 folder from files to access the dataset).</li> <li>set random seeds for reproducibility (eg: random.seed(42)  # Python random module seed, np.random.seed(42)  # NumPy random module seed, tf.random.set_seed(42)  # TensorFlow random seed)</li> <li>Split the dataset into training and testing sets without changing its order.</li> <li>Training data: first 80% data, Testing data: last 20% data</li> <li>Use KNN with k=5 neighbours.(Use   sklearn.neighbors import KNeighborsClassifier and  StandardScaler() is not required.)</li> <li>Report the classification accuracy in percentage</li> </ul> (1 Point) <br> enter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals)",
 	"fig":"",
 	"mcq": []
   }
  , {
-	"qno": "7",
-	"question": "Using the K-Nearest Neighbours (KNN) algorithm, classify modulation schemes based on their signal constellation points. Generated datasets for BPSK, QPSK, and 8-PSK modulation schemes with AWGN noise is given and use KNN to classify them. Evaluate the improvement in classification accuracy for different K_neighbours values.  Instructions:\n<ul><li>Generated 300000 samples for each modulation scheme with AWGN noise with SNR of 10 dB. (open QUIZ 2 folder from files to access the dataset).</li> <li>set random seeds for reproducibility (eg: random.seed(42)  # Python random module seed, np.random.seed(42)  # NumPy random module seed, tf.random.set_seed(42)  # TensorFlow random seed)</li><li>Split - the dataset into training and testing sets without changing its order.</li><li>Training - data: first 80% data, Testing data: last 20% data</li> <li>Use - KNN with k=5 and k=7 neighbours.(  Use   sklearn.neighbors import KNeighborsClassifier and  StandardScaler() is not required.)<li> <li>Report - the percentage improvement in classification accuracy from k=5 to k=7</li></ul>\n\nenter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals) ",
+	"qno": "7. KNN-based Modulation Classification Accuracy using different N-values",
+	"question": "Using the K-Nearest Neighbours (KNN) algorithm, classify modulation schemes based on their signal constellation points. Generated datasets for BPSK, QPSK, and 8-PSK modulation schemes with AWGN noise is given and use KNN to classify them. Evaluate the improvement in classification accuracy for different K_neighbours values. <br> Instructions: <ul> <li>Generated 300000 samples for each modulation scheme with AWGN noise with SNR of 10 dB.(open QUIZ 2 folder from files to access the dataset).</li> <li>set random seeds for reproducibility (eg: random.seed(42)  # Python random module seed, np.random.seed(42)  # NumPy random module seed, tf.random.set_seed(42)  # TensorFlow random seed)</li> <li>Split - the dataset into training and testing sets without changing its order.</li> <li>Training - data: first 80% data, Testing data: last 20% data</li> <li>Use - KNN with k=5 and k=7 neighbours.(Use sklearn.neighbors import KNeighborsClassifier and  StandardScaler() is not required.)<li> <li>Report - the percentage improvement in classification accuracy from k=5 to k=7</li> </ul> (1 Point) <br> enter a numerical answer up to two decimals only (i.e., truncate your answer up to 2 decimals)",
 	"fig":"",
 	"mcq": []
   }
@@ -271,14 +271,14 @@
 	]
   }
 , {
-	"qno": "31",
-	"question": "Model a  Baseline Two–Class Classifier Using a block of N = 1000 symbols per trial and equal priors, simulate the classifier at SNR = 10 dB.\n(For SNR = 10 dB, noise variance σ² = 1/10 = 0.1.)\nQuestion: What is the expected overall classification accuracy in percentage?\n\nUseful data:\nWrite a Python code that generates 1000 symbols for each modulation type, adds noise, applies the classifier (with threshold T = 0.1), and estimates accuracy over 500 Monte Carlo trials.\nBPSK: symbols ±1 (real only)\nQPSK: symbols 1/sqrt(2)*(±1 ± j)\nNoise: complex AWGN (each part variance = noise_var/2)\nReceived signals:\nr_bpsk = bpsk_symbols + noise_bpsk\nr_qpsk = qpsk_symbols + noise_qpsk\n  Decisions: if the average imaginary part of the received signals < threshold, decide BPSK; else, QPSK.\nUse np.random.seed(42) for reproducibility.\n\n(1 Point)",
+	"qno": "31. Baseline Two–Class Classifier for Modulation detection",
+	"question": "Model a  Baseline Two–Class Classifier Using a block of N = 1000 symbols per trial and equal priors, simulate the classifier at SNR = 10 dB. <br> (For SNR = 10 dB, noise variance σ² = 1/10 = 0.1.) <br> <b>Question: What is the expected overall classification accuracy in percentage?</b> <br>Useful data: <ul> <li>Write a Python code that generates 1000 symbols for each modulation type, adds noise, applies the classifier (with threshold T = 0.1), and estimates accuracy over 500 Monte Carlo trials.</li> <li>BPSK: symbols ±1 (real only)</li> <li>QPSK: symbols 1/sqrt(2)*(±1 ± j)</li> <li>Noise: complex AWGN (each part variance = noise_var/2)</li> <li>Received signals: <br>r_bpsk = bpsk_symbols + noise_bpsk <br>r_qpsk = qpsk_symbols + noise_qpsk </li> <li>Decisions: if the average imaginary part of the received signals < threshold, decide BPSK; else, QPSK.</li> <li>Use np.random.seed(42) for reproducibility.</li> </ul> (1 Point)",
 	"fig":"",
 	"mcq": []
   }
 , {
-	"qno": "32",
-	"question": "Model  a Baseline Two–Class Classifier Using a block of N = 1000 symbols per trial and equal priors, simulate the classifier at SNR = 10 dB.\n(For SNR = 10 dB, noise variance σ² = 1/10 = 0.1.)\nEach transmitted symbol is multiplied by a random complex gain h ~ CN(0,1) (mean power 1).\nThe received signal is:\nr = h·s + w\n\nQuestion: What is the expected overall classification accuracy in percentage?\n\nUseful data:\nWrite a Python code that generates 1000 symbols for each modulation type, adds noise, applies the classifier (with threshold T = 0.1), and estimates accuracy over 500 Monte Carlo trials.\nBPSK: symbols ±1 (real only)\n\nQPSK: symbols 1/sqrt2*(±1 ± j)\n\nNoise: complex AWGN (each part variance = noise_var/2)\n\nReceived signals:\n\nr_bpsk = h*bpsk_symbols + noise_bpsk\n\nr_qpsk = h*qpsk_symbols + noise_qpsk\n\nDecisions: if the average imaginary part of the received signals < threshold, decide BPSK; else, QPSK.\n\nUse np.random.seed(42) for reproducibility.\n(1 Point)",
+	"qno": "32. Baseline Two–Class Classifier for Modulation detection",
+	"question": "Model a Baseline Two–Class Classifier Using a block of N = 1000 symbols per trial and equal priors, simulate the classifier at SNR = 10 dB. <br> (For SNR = 10 dB, noise variance σ² = 1/10 = 0.1.) <br> Each transmitted symbol is multiplied by a random complex gain h ~ CN(0,1) (mean power 1). <br> The received signal is: <br>r = h·s + w <br> <b>Question: What is the expected overall classification accuracy in percentage?</b> <br> Useful data: <br> Write a Python code that generates 1000 symbols for each modulation type, adds noise, applies the classifier (with threshold T = 0.1), and estimates accuracy over 500 Monte Carlo trials. <ul> <li>BPSK: symbols ±1 (real only)</li> <li>QPSK: symbols 1/sqrt2*(±1 ± j)</li> <li>Noise: complex AWGN (each part variance = noise_var/2)</li> <li>Received signals: <br> r_bpsk = h*bpsk_symbols + noise_bpsk <br> r_qpsk = h*qpsk_symbols + noise_qpsk</li> <li>Decisions: if the average imaginary part of the received signals < threshold, decide BPSK; else, QPSK. <br>Use np.random.seed(42) for reproducibility.</li> </ul>(1 Point)",
 	"fig":"",
 	"mcq": []
   }

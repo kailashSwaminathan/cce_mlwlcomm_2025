@@ -5,6 +5,7 @@ import random
 import qlearn
 import cnn
 import nn
+import trial
 
 def sol_42():
     """
@@ -70,6 +71,14 @@ def main(qno):
     """
     """
     match(qno):
+        case '6':
+            nn.sol_06()
+        case '7':
+            nn.sol_07()
+        case '31':
+            trial.sol_31()
+        case '32':
+            trial.sol_32()
         case '33':
             cnn.sol_33()
         case '34':

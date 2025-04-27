@@ -2,10 +2,13 @@ import random
 import os.path
 
 import numpy as np
+import pandas as pd
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, InputLayer, Dropout
 from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 
 import mod
@@ -15,6 +18,60 @@ random.seed(42)
 np.random.seed(42)
 tf.random.set_seed(42)
 
+
+def sol_06():
+    """
+    """
+    sval = 42
+    random.seed(sval)
+    np.random.seed(sval)
+    tf.random.set_seed(sval)
+    
+    dfile = "data/Q6_KNN_MOD_CLASSIFICATION/KNN_MOD_CLASSIFICATION_data.csv"
+    df = pd.read_csv(dfile)
+    x_train, x_test = np.empty((0,2)), np.empty((0,2))
+    y_train, y_test = np.empty((0,)), np.empty((0,))
+    for ident in [0.0,1.0,2.0]:
+        mdata = df[df['Modulation Classification'] == ident][['Real Part of Recieved symbol ','Imaginary Part of Recieved symbol ']]
+        mdata = np.array(mdata)
+        datalbl = df[df['Modulation Classification'] == ident][['Modulation Classification']]
+        datalbl = np.array(datalbl).squeeze()
+        datatr, datatst, lbltr, lbltst = train_test_split(mdata, datalbl, test_size=0.2)
+        x_train = np.concatenate([x_train, datatr])
+        x_test = np.concatenate([x_test, datatst])
+        y_train = np.concatenate([y_train, lbltr])
+        y_test = np.concatenate([y_test, lbltst])
+    knnmodel = KNeighborsClassifier(5)
+    knnmodel.fit(x_train, y_train)
+    y_pred = knnmodel.predict(x_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    print(f"Accuracy: {accuracy*100}%")
+    
+def sol_07():
+    """
+    """
+    dfile = "data/Q7_KNN_MOD_CLASSIFICATION/KNN_MOD_CLASSIFICATION_data.csv"
+    df = pd.read_csv(dfile)
+    x_train, x_test = np.empty((0,2)), np.empty((0,2))
+    y_train, y_test = np.empty((0,)), np.empty((0,))
+    for ident in [0.0,1.0,2.0]:
+        mdata = df[df['Modulation Classification'] == ident][['Real Part of Recieved symbol ','Imaginary Part of Recieved symbol ']]
+        mdata = np.array(mdata)
+        datalbl = df[df['Modulation Classification'] == ident][['Modulation Classification']]
+        datalbl = np.array(datalbl).squeeze()
+        datatr, datatst, lbltr, lbltst = train_test_split(mdata, datalbl, test_size=0.2)
+        x_train = np.concatenate([x_train, datatr])
+        x_test = np.concatenate([x_test, datatst])
+        y_train = np.concatenate([y_train, lbltr])
+        y_test = np.concatenate([y_test, lbltst])
+    for kn in [5,6,7]:
+        knnmodel = KNeighborsClassifier(kn)
+        knnmodel.fit(x_train, y_train)
+        y_pred = knnmodel.predict(x_test)
+        accuracy = accuracy_score(y_test, y_pred)
+        print(f"Accuracy for K-Neighbours({kn}): {accuracy*100}%")
+    
+    
 
 def sol_35():
     """
@@ -62,5 +119,7 @@ def sol_35():
     print(f"Accuracy: {results[1]*100}%")
     
 if __name__ == "__main__":
-    sol_35()
+    #sol_06()
+    sol_07()
+    #sol_35()
     
